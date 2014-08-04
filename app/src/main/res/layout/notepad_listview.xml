@@ -25,7 +25,7 @@
         android:textSize="20sp"
         android:layout_margin="10dp"
         android:textColor="@android:color/black"
-        android:background="@android:color/holo_blue_bright"
+        android:background="@drawable/event_yellow"
         android:layout_weight="10"
         android:hint="Please Input the Relationable Content, Please"/>
 

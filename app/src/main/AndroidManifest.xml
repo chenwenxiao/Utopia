@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.Utopia.utopia.app.SQL.DataProvider"
+            android:name=".SQL.DataProvider"/>
     </application>
 
 </manifest>
