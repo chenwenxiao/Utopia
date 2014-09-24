@@ -1,41 +1,36 @@
 package com.Utopia.utopia.app;
 
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 
-import java.net.ContentHandler;
+import com.Utopia.utopia.app.SQL.DataProviderMetaData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ViewPagerFragment0 extends Fragment {
+    public static final int KIND_NOTE = DataProviderMetaData.DataTableMetaData.KIND_NOTE;
+
     private ListView lv0;
-    private SQLiteNotePad snp;
+    private ContentResolver cr;
     private Button button0;
     private SimpleAdapter sa;
-    private ProgressBar m_ProgressBar;
-    private ActivityManager am;
     EditText editText0;
     List<Map<String, Object>> listResource = new ArrayList<Map<String, Object>>();
-    int count;
 
     public ViewPagerFragment0() {
         super();
@@ -44,26 +39,27 @@ public class ViewPagerFragment0 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout0,
+        View view = inflater.inflate(R.layout.fragment_layout0,
                 container, false);
-        button0 = (Button) getActivity().findViewById(R.id.page0Button0);
-        editText0 = (EditText) getActivity().findViewById(R.id.page0EditText0);
-        lv0 = (ListView) getActivity().findViewById(R.id.page0ListView0);
-        snp = new SQLiteNotePad(getActivity().getApplicationContext());
+        button0 = (Button) view.findViewById(R.id.page0Button0);
+        editText0 = (EditText) view.findViewById(R.id.page0EditText0);
+        lv0 = (ListView) view.findViewById(R.id.page0ListView0);
+        cr = getActivity().getContentResolver();
         FromSQLToListView();
+
         button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newContent = editText0.getText().toString();
-                if (!newContent.equals("")) {
-                    ++count;
-                    ContentValues newValues = new ContentValues();
-                    newValues.put("_Id", count);
-                    newValues.put("_content", newContent);
+                String value = editText0.getText().toString();
+                if (!value.equals("")) {
+                    ContentValues cv = new ContentValues();
+                    cv.put("value", value);
+                    cv.put("kind", KIND_NOTE);
+                    cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
                     Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("_id", count);
-                    map.put("_content", newContent);
+                    map.put("value", value);
+                    map.put("kind", KIND_NOTE);
                     listResource.add(map);
                     lv0.invalidateViews();
                 }
@@ -74,24 +70,24 @@ public class ViewPagerFragment0 extends Fragment {
     }
 
     public void FromSQLToListView() {
-        SQLiteDatabase sdb = snp.getReadableDatabase();
-        count = 0;
-        Cursor cursor = sdb.query("NotePad", new String[]{"_id", "_content"}, null, null, null, null, "_id asc");
+        Uri uri = DataProviderMetaData.DataTableMetaData.CONTENT_URI;
+
+        cr.insert(uri, null);
+
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "value", "kind"}, "kind = " + KIND_NOTE, null, "created asc");
+
+        Log.i("utopia", String.valueOf(cursor == null));
 
         while (cursor.moveToNext()) {
-            ++count;
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("_id", cursor.getInt(cursor.getColumnIndex("_id")));
-            map.put("_content", cursor.getString(cursor.getColumnIndex("_content")));
+            map.put("created", cursor.getLong(cursor.getColumnIndex("created")));
+            map.put("value", cursor.getString(cursor.getColumnIndex("value")));
             listResource.add(map);
         }
         cursor.close();
-        sdb.close();
-        if (count > 0) {
-            sa = new SimpleAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listview,
-                    new String[]{"_content"}, new int[]{R.id.EventEditText});
-            lv0.setAdapter(sa);
-        }
+        sa = new SimpleAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listview,
+                new String[]{"value"}, new int[]{R.id.EventEditText});
+        lv0.setAdapter(sa);
     }
 }
 

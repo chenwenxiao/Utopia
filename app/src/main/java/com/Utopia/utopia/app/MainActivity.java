@@ -1,26 +1,50 @@
 package com.Utopia.utopia.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends FragmentActivity {
+
+    private void getOverflowMenu() {
+
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if(menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Fragment> fragmentList;
 
     @Override
     protected void onCreate(Bundle arg0) {
         // TODO Auto-generated method stub
         super.onCreate(arg0);
         setContentView(R.layout.activity_main);
+        //用于永远显示3个点
+        getOverflowMenu();
 
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
         pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.gold));
@@ -29,7 +53,7 @@ public class MainActivity extends FragmentActivity {
         pagerTabStrip.setTextSpacing(50);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();//ViewPager中显示的数据
+        fragmentList = new ArrayList<Fragment>();//ViewPager中显示的数据
         ArrayList<String> titleList = new ArrayList<String>();// 标题数据
         //添加数据
         fragmentList.add(new ViewPagerFragment0());
@@ -53,7 +77,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     //适配器
-    private class MyPagerFragmentAdapter extends FragmentPagerAdapter {
+    private class MyPagerFragmentAdapter extends FragmentStatePagerAdapter {
 
         private List<Fragment> fragmentList;
         private List<String> titleList;
@@ -95,15 +119,68 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
+    final public static int REQUEST_STDENTRY = 0;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch (id) {
+            case R.id.action_add:
+                Intent intent = new Intent(MainActivity.this, STDEntry.class);
+                startActivityForResult(intent, REQUEST_STDENTRY);
+
+                break;
+            case R.id.action_settings:
+
+                break;
+            case R.id.action_account:
+
+                break;
+            case R.id.action_recommend:
+
+                break;
+            case R.id.action_score:
+
+                break;
+            case R.id.action_feedback:
+
+                break;
+            case R.id.action_about:
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void addEvent(Map<String, Object> map) {
+        ((ViewPagerFragment2) fragmentList.get(2)).addEvent(map);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_STDENTRY:
+                Bundle bundle = data.getExtras();
+                Map<String, Object> map = new HashMap<String, Object>();
+
+                map.put("create", bundle.get("create"));
+                map.put("modified", bundle.get("modified"));
+                map.put("title", bundle.get("title"));
+                map.put("value", bundle.get("value"));
+                map.put("begin", bundle.get("begin"));
+                map.put("end", bundle.get("end"));
+                map.put("finish", bundle.get("finish"));
+                map.put("kind", bundle.get("kind"));
+                map.put("hint", bundle.get("hint"));
+
+                addEvent(map);
+                break;
+            default:
+                break;
+        }
+    }
+
 }
