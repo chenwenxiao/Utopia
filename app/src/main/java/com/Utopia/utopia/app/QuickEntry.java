@@ -1,9 +1,11 @@
 package com.Utopia.utopia.app;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,7 +19,7 @@ import java.util.HashMap;
 /**
  * Created by Joe on 14-8-15.
  */
-public class QuickEntry extends Dialog {
+public class QuickEntry extends AlertDialog {
 
     Button button1;
     Button button2;
@@ -31,13 +33,22 @@ public class QuickEntry extends Dialog {
 
     public QuickEntry(Context context) {
         super(context);
+
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.dialog_quick_entry);
+
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);

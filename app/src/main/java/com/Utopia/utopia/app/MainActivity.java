@@ -130,9 +130,11 @@ public class MainActivity extends FragmentActivity {
 
         switch (id) {
             case R.id.action_add:
+/*
                 Intent intent = new Intent(MainActivity.this, STDEntry.class);
                 startActivityForResult(intent, REQUEST_STDENTRY);
-
+*/
+                new QuickEntry(this).show();
                 break;
             case R.id.action_settings:
 
@@ -175,7 +177,7 @@ public class MainActivity extends FragmentActivity {
                 map.put("finish", bundle.get("finish"));
                 map.put("kind", bundle.get("kind"));
                 map.put("hint", bundle.get("hint"));
-
+                
                 addEvent(map);
                 break;
             default:

@@ -3,8 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:background="@color/lightPink">
     <ViewFlipper
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -21,13 +21,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:weightSum="1">
-
-                <ImageView
+                android:weightSum="1"
+                >
+                <com.Utopia.utopia.app.EveryDayPushView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/page2Scroll0imageView"
-                    android:layout_weight="0.2"/>
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"></com.Utopia.utopia.app.EveryDayPushView>
+
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -69,12 +69,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:weightSum="1">
-
-                <ImageView
+                <com.Utopia.utopia.app.EveryDayPushView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/page2Scroll1imageView"
-                    android:layout_weight="0.2" />
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"></com.Utopia.utopia.app.EveryDayPushView>
+
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -93,7 +92,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/time_line"
+                        android:src="@drawable/time_line_6_am"
                         android:id="@+id/page2Scroll1TimeLine" />
 
                     <LinearLayout
@@ -116,12 +115,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:weightSum="1">
-
-                <ImageView
+                <com.Utopia.utopia.app.EveryDayPushView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/page2Scroll2imageView"
-                    android:layout_weight="0.2" />
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"></com.Utopia.utopia.app.EveryDayPushView>
+
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -140,7 +138,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/time_line"
+                        android:src="@drawable/time_line_6_am"
                         android:id="@+id/page2Scroll2TimeLine" />
 
                     <LinearLayout

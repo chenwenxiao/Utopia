@@ -2,16 +2,22 @@
 <pre-dex-items>
 
     <item
-        dex="C:\Users\Administrator\AndroidStudioProjects\Utopia\app\build\intermediates\pre-dexed\debug\classes-805256967ebecbabbd2538a5bb2f1c25c4b508db.jar"
-        jar="C:\Users\Administrator\AndroidStudioProjects\Utopia\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        dex="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/pre-dexed/debug/classes-d91b6b6c4aae5c4349e846db30c3fce95035271d.jar"
+        jar="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/exploded-aar/Utopia-Utopia/library/unspecified/classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+        sha1="1431a8d53910309b8c1e271b7d11eedc271f1c7b"/>
     <item
-        dex="C:\Users\Administrator\AndroidStudioProjects\Utopia\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-03443f9dca337e10c3b7f5e7aecada5843ac0eaf.jar"
-        jar="C:\Users\Administrator\android-sdks\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        dex="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/pre-dexed/debug/classes-5175a6586c897d726c54caace796cc446c008159.jar"
+        jar="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.0.1/classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+        sha1="f71a6822470c9eb659d4f4a6cb57b780b35f058b"/>
+    <item
+        dex="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/pre-dexed/debug/support-v4-19.0.1-3bf117e59e2e0f41bbf9219f2be90cdcf1dd583d.jar"
+        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.0.1/support-v4-19.0.1.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="587da9a481ffd341d2fa091704489b89845ddacd"/>
 
 </pre-dex-items>

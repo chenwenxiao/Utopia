@@ -6,19 +6,23 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/image_view_1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:src="@drawable/ic_launcher"
         android:layout_weight="1"/>
     <ImageView
+        android:id="@+id/image_view_2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:src="@drawable/ic_launcher"
         android:layout_weight="1"/>
     <ImageView
+        android:id="@+id/image_view_3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:src="@drawable/ic_launcher"
         android:layout_weight="1"/>
+
 
 </LinearLayout>

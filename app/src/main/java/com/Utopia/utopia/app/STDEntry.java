@@ -28,7 +28,7 @@ public class STDEntry extends Activity{
         super.onCreate(arg0);
         setContentView(R.layout.activity_std_entry);
 
-
+    /*
         picker01 = (NumberPicker) findViewById(R.id.picker01);
         picker02 = (NumberPicker) findViewById(R.id.picker02);
         picker11 = (NumberPicker) findViewById(R.id.picker11);
@@ -89,11 +89,11 @@ public class STDEntry extends Activity{
                 intent.putExtra("end", end);
                 intent.putExtra("finish", finish);
                 intent.putExtra("kind", kind);
-                intent.putExtra("hint", hint);
+                intent.putExtra("myhint", hint);
                 finish();
             }
         });
-
+        */
     }
 
 

@@ -11,5 +11,9 @@
     <string name="score">Score</string>
     <string name="feedback">Feedback</string>
     <string name="about">About</string>
+    <string name="title_activity_health_tips_list">HealthTipsListActivity</string>
+    <string name="title_activity_health_tip_list">HealthTipListActivity</string>
+    <string name="title_activity_every_day_push_list">EveryDayPushListActivity</string>
+    <string name="title_activity_memorial_event_list">MemorialEventListActivity</string>
 
 </resources>

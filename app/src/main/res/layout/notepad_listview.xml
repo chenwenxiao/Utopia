@@ -17,7 +17,7 @@
         />
     <!-- 修改左侧布局间隔-->
 
-    <EditText
+    <TextView
         android:id="@+id/EventEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

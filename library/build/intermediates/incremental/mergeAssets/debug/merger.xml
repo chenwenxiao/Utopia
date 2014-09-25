@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="C:\Users\Administrator\AndroidStudioProjects\Utopia\library\assets" />
+        <source path="/Users/Joe/GitHub-Constantipursue/Utopia/library/assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="C:\Users\Administrator\AndroidStudioProjects\Utopia\library\build-types\debug\assets" />
+        <source path="/Users/Joe/GitHub-Constantipursue/Utopia/library/build-types/debug/assets" />
     </dataSet>
 
 </merger>

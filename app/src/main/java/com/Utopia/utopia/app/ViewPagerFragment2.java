@@ -74,10 +74,9 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
                 (LinearLayout) view.findViewById(R.id.page2Scroll0ScheduleLayout),
                 (LinearLayout) view.findViewById(R.id.page2Scroll1ScheduleLayout),
                 (LinearLayout) view.findViewById(R.id.page2Scroll2ScheduleLayout)};
-        imageView = new ImageView[]{
-                (ImageView) view.findViewById(R.id.page2Scroll0imageView),
-                (ImageView) view.findViewById(R.id.page2Scroll1imageView),
-                (ImageView) view.findViewById(R.id.page2Scroll2imageView),
+
+        imageView = new ImageView[]{null,null,null
+
         };
         ImageView TimeLine = (ImageView) view.findViewById(R.id.page2Scroll1TimeLine);
         secondLength = TimeLine.getHeight() / 86400.0;
@@ -347,7 +346,7 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             insertSchedule(map, ScheduleLayout, ScheduleMap);
         }
 
-        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"createdd", "modified", "title", "value", "begin",
+        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
                 "end", "finish", "kind"}, "kind = " + KIND_ADVERTISE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
@@ -379,7 +378,7 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             insertAdvertise(map, imageView);
         }
 
-        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"createdd", "modified", "title", "value", "begin",
+        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
                 "end", "finish", "kind"}, "kind = " + KIND_TIP +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
@@ -442,6 +441,8 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
     private void log_int(float i) {
         Log.i("utopia_fling", String.valueOf(i));
     }
+
+
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
