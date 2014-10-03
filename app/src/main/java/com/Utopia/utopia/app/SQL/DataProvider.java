@@ -67,7 +67,7 @@ public class DataProvider extends ContentProvider {
                     + DataProviderMetaData.DataTableMetaData.DATA_BEGIN + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_END + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_FINISH + " INTEGER, "
-                    + DataProviderMetaData.DataTableMetaData.DATA_KIND + " INTEGER"
+                    + DataProviderMetaData.DataTableMetaData.DATA_KIND + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_HINT + " INTEGER" + ");");
         }
 

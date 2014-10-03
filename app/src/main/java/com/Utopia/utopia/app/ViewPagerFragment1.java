@@ -45,7 +45,7 @@ public class ViewPagerFragment1 extends Fragment {
     public void FromSQLToListView() {
         count = 0;
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind"}, "kind = " + KIND_SCHEDULE, null, "begin asc");
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_SCHEDULE, null, "begin asc");
 
         while (cursor.moveToNext()) {
             ++count;
@@ -53,7 +53,7 @@ public class ViewPagerFragment1 extends Fragment {
             long create, modified, begin, end, finish, kind;
             String title, value, hint;
 
-            create = cursor.getLong(cursor.getColumnIndex("create"));
+            create = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
             title = cursor.getString(cursor.getColumnIndex("title"));
             value = cursor.getString(cursor.getColumnIndex("value"));
@@ -61,7 +61,7 @@ public class ViewPagerFragment1 extends Fragment {
             end = cursor.getLong(cursor.getColumnIndex("end"));
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
-            hint = cursor.getString(cursor.getColumnIndex("hint"));
+            hint = cursor.getString(cursor.getColumnIndex("myhint"));
 
             map.put("created", create);
             map.put("modified", modified);
@@ -71,14 +71,14 @@ public class ViewPagerFragment1 extends Fragment {
             map.put("end", end);
             map.put("finish", finish);
             map.put("kind", kind);
-            map.put("hint", hint);
+            map.put("myhint", hint);
 
             listResource.add(map);
         }
         cursor.close();
         if (count > 0) {
             sa = new SimpleAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listview,
-                    new String[]{"value"}, new int[]{R.id.EventEditText});
+                    new String[]{"value"}, new int[]{R.id.EventTextViewM});
             lv0.setAdapter(sa);
         }
     }

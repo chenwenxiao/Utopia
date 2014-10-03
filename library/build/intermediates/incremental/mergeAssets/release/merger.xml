@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/Users/Joe/Downloads/Utopia-Utopia/library/assets" />
+        <source path="/home/chenwenxiao/AndroidStudioProjects/Utopia/library/assets" />
     </dataSet>
     <dataSet config="release" >
-        <source path="/Users/Joe/Downloads/Utopia-Utopia/library/build-types/release/assets" />
+        <source path="/home/chenwenxiao/AndroidStudioProjects/Utopia/library/build-types/release/assets" />
     </dataSet>
 
 </merger>

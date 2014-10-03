@@ -2,22 +2,22 @@
 <pre-dex-items>
 
     <item
-        dex="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/pre-dexed/debug/classes-d91b6b6c4aae5c4349e846db30c3fce95035271d.jar"
-        jar="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/exploded-aar/Utopia-Utopia/library/unspecified/classes.jar"
+        dex="/home/chenwenxiao/AndroidStudioProjects/Utopia/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-1bd09adae01d10f8f097a7c54535018843cfa550.jar"
+        jar="/opt/android-studio/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="1431a8d53910309b8c1e271b7d11eedc271f1c7b"/>
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/pre-dexed/debug/classes-5175a6586c897d726c54caace796cc446c008159.jar"
-        jar="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.0.1/classes.jar"
+        dex="/home/chenwenxiao/AndroidStudioProjects/Utopia/app/build/intermediates/pre-dexed/debug/classes-6bde8d7cad50bf9b65c744bec7232cd286cb9da8.jar"
+        jar="/home/chenwenxiao/AndroidStudioProjects/Utopia/app/build/intermediates/exploded-aar/Utopia/library/unspecified/classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="f71a6822470c9eb659d4f4a6cb57b780b35f058b"/>
+        sha1="81d52b426c7e235b957e4352d1315f5017ccc8d0"/>
     <item
-        dex="/Users/Joe/Downloads/Utopia-Utopia/app/build/intermediates/pre-dexed/debug/support-v4-19.0.1-3bf117e59e2e0f41bbf9219f2be90cdcf1dd583d.jar"
-        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.0.1/support-v4-19.0.1.jar"
+        dex="/home/chenwenxiao/AndroidStudioProjects/Utopia/app/build/intermediates/pre-dexed/debug/classes-0c326f18cca89de92df5107093f6b3976e2487dd.jar"
+        jar="/home/chenwenxiao/AndroidStudioProjects/Utopia/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="587da9a481ffd341d2fa091704489b89845ddacd"/>
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
 
 </pre-dex-items>

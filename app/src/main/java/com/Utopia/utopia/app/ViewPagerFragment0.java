@@ -112,8 +112,6 @@ public class ViewPagerFragment0 extends Fragment {
     public void FromSQLToListView() {
         Uri uri = DataProviderMetaData.DataTableMetaData.CONTENT_URI;
 
-        cr.insert(uri, null);
-
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "value", "kind"}, "kind = " + KIND_NOTE, null, "created asc");
 
         Log.i("utopia", String.valueOf(cursor == null));
@@ -126,7 +124,7 @@ public class ViewPagerFragment0 extends Fragment {
         }
         cursor.close();
         sa = new SimpleAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listview,
-                new String[]{"value"}, new int[]{R.id.EventEditText});
+                new String[]{"value"}, new int[]{R.id.EventTextViewM});
         lv0.setAdapter(sa);
     }
 

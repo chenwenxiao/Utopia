@@ -18,7 +18,7 @@
     <!-- 修改左侧布局间隔-->
 
     <TextView
-        android:id="@+id/EventEditText"
+        android:id="@+id/EventTextViewM"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|left"

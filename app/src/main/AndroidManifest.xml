@@ -28,10 +28,6 @@
             android:authorities="com.Utopia.utopia.app.SQL.DataProvider" />
 
         <activity
-            android:name=".SQL.HealthTipsListActivity"
-            android:label="@string/title_activity_health_tips_list" >
-        </activity>
-        <activity
             android:name=".HealthTipListActivity"
             android:label="@string/title_activity_health_tip_list" >
         </activity>

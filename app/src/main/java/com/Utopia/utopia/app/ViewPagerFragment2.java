@@ -2,6 +2,7 @@ package com.Utopia.utopia.app;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,10 +17,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
+import java.text.Format;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,7 +32,7 @@ import java.util.TreeMap;
  * Created by Administrator on 2014/5/21 0021.
  * 使用Fragment显示ViewPager中的主要内容
  */
-public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGestureListener {
+public class ViewPagerFragment2 extends Fragment {
     public static final int KIND_SCHEDULE = DataProviderMetaData.DataTableMetaData.KIND_SCHEDULE;
     public static final int KIND_TIP = DataProviderMetaData.DataTableMetaData.KIND_TIP;
     public static final int KIND_ADVERTISE = DataProviderMetaData.DataTableMetaData.KIND_ADVERTISE;
@@ -47,6 +50,7 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
     int current;
     long currentTime;
     TreeMap<String, LinearLayout> TipMap0, TipMap1, TipMap2, ScheduleMap0, ScheduleMap1, ScheduleMap2;
+    QuickEntry qe;
 
     public ViewPagerFragment2() {
         super();
@@ -57,7 +61,9 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_layout2,
                 container, false);
+
         mViewFlipper = (ViewFlipper) view.findViewById(R.id.page2ViewFlipper);
+        mViewFlipper.setDisplayedChild(1);
         Scroll = new ScrollView[]{
                 (ScrollView) view.findViewById(R.id.page2Scroll0),
                 (ScrollView) view.findViewById(R.id.page2Scroll1),
@@ -75,8 +81,77 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
                 (LinearLayout) view.findViewById(R.id.page2Scroll1ScheduleLayout),
                 (LinearLayout) view.findViewById(R.id.page2Scroll2ScheduleLayout)};
 
-        imageView = new ImageView[]{null,null,null
+        for (int i = 0; i < 3; ++i) {
+            Scroll[i].setLongClickable(true);
+            Scroll[i].setFocusable(true);
+            Scroll[i].setOnTouchListener(new View.OnTouchListener() {
+                int beginY;
 
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_MOVE:
+                            break;
+                        case MotionEvent.ACTION_DOWN:
+                            beginY = (int) (event.getY() + Scroll[current].getScrollY());
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            if (beginY > event.getY()) {
+                                if (Scroll[current].getChildAt(0).getMeasuredHeight() <= Scroll[current].getHeight() + Scroll[current].getScrollY()) {
+                                    mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_in));
+                                    mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_out));
+                                    mViewFlipper.showNext();
+                                    current = Next[current];
+                                    currentTime = TimeUtil.getTomorrow(currentTime);
+                                    int tomorrow = Next[current];
+                                    long tomorrowTime = TimeUtil.getTomorrow(currentTime);
+                                    if (tomorrow == 0)
+                                        FromSQLToListView(tomorrowTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], imageView[0], TipMap0, ScheduleMap0);
+                                    else if (tomorrow == 1)
+                                        FromSQLToListView(tomorrowTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], imageView[1], TipMap1, ScheduleMap1);
+                                    else
+                                        FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], imageView[2], TipMap2, ScheduleMap2);
+                                }
+                            } else if (beginY < event.getY()) {
+                                if (Scroll[current].getScrollY() <= 0) {
+                                    mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_in));
+                                    mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_out));
+                                    mViewFlipper.showPrevious();
+                                    current = Prev[current];
+                                    currentTime = TimeUtil.getYesterday(currentTime);
+                                    int yesterday = Prev[current];
+                                    long yesterdayTime = TimeUtil.getYesterday(currentTime);
+                                    if (yesterday == 0)
+                                        FromSQLToListView(yesterdayTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], imageView[0], TipMap0, ScheduleMap0);
+                                    else if (yesterday == 1)
+                                        FromSQLToListView(yesterdayTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], imageView[1], TipMap1, ScheduleMap1);
+                                    else
+                                        FromSQLToListView(yesterdayTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], imageView[2], TipMap2, ScheduleMap2);
+                                }
+                            }
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            Scroll[i].setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    qe = new QuickEntry(getActivity());
+                    qe.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            addEvent(qe.getContent());
+                        }
+                    });
+                    return true;
+                }
+            });
+        }
+
+        imageView = new ImageView[]{
+                null, null, null
         };
         ImageView TimeLine = (ImageView) view.findViewById(R.id.page2Scroll1TimeLine);
         secondLength = TimeLine.getHeight() / 86400.0;
@@ -90,7 +165,9 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
 
         cr = getActivity().getContentResolver();
 
-        long todayTime, tomorrowTime, yesterdayTime;
+        long todayTime,
+                tomorrowTime,
+                yesterdayTime;
 
         currentTime = TimeUtil.getCurrentTime();
         yesterdayTime = TimeUtil.getYesterday(currentTime);
@@ -99,8 +176,11 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
 
         current = 1;
         currentTime = todayTime;
+
         FromSQLToListView(yesterdayTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], imageView[0], TipMap0, ScheduleMap0);
+
         FromSQLToListView(todayTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], imageView[1], TipMap1, ScheduleMap1);
+
         FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], imageView[2], TipMap2, ScheduleMap2);
 
         return view;
@@ -113,11 +193,11 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
         end = Long.valueOf(String.valueOf(map.get("end")));
-        finish = Long.valueOf(String.valueOf(map.get("begin")));
-        kind = Long.valueOf(String.valueOf(map.get("end")));
+        finish = Long.valueOf(String.valueOf(map.get("finish")));
+        kind = Long.valueOf(String.valueOf(map.get("kind")));
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
-        hint = String.valueOf(map.get("hint"));
+        hint = String.valueOf(map.get("myhint"));
 
         ContentValues cv = new ContentValues();
         cv.put("created", created);
@@ -127,7 +207,7 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         cv.put("kind", kind);
         cv.put("title", title);
         cv.put("value", value);
-        cv.put("hint", hint);
+        cv.put("myhint", hint);
 
         cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
@@ -135,8 +215,7 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             if (current == 0) insertSchedule(map, ScheduleLayout[0], ScheduleMap0);
             else if (current == 1) insertSchedule(map, ScheduleLayout[1], ScheduleMap1);
             else insertSchedule(map, ScheduleLayout[2], ScheduleMap2);
-        }
-        else if (kind == KIND_TIP) {
+        } else if (kind == KIND_TIP) {
             if (current == 0) insertTip(map, TipLayout[0], TipMap0);
             else if (current == 1) insertTip(map, TipLayout[1], TipMap1);
             else insertTip(map, TipLayout[2], TipMap2);
@@ -152,15 +231,15 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         Iterator it = TipMap.keySet().iterator();
         long currentCreated, id = 0;
         while (it.hasNext()) {
-            it.next();
+            String key = it.next().toString();
             ++id;
-            currentCreated = Long.parseLong(it.toString().substring(14, 28));
-            if (TipMap.get(it) == Layout) {
+            currentCreated = Long.parseLong(key.substring(14, 28).trim());
+            if (TipMap.get(key) == Layout) {
                 cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI,
                         "created = " + currentCreated
-                        + " AND " + "kind = " + KIND_TIP, null);
+                                + " AND " + "kind = " + KIND_TIP, null);
                 TipLayout[current].removeViewAt((int) id);
-                TipMap.remove(it);
+                TipMap.remove(key);
                 updateTip(TipLayout[current], TipMap);
             }
         }
@@ -173,33 +252,34 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         it = ScheduleMap.keySet().iterator();
         id = 0;
         while (it.hasNext()) {
-            it.next();
+            String key = it.next().toString();
             ++id;
-            currentCreated = Long.parseLong(it.toString().substring(14, 28));
-            if (ScheduleMap.get(it) == Layout) {
+            currentCreated = Long.parseLong(key.substring(14, 28).trim());
+            if (ScheduleMap.get(key) == Layout) {
                 cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI,
                         "created = " + currentCreated
                                 + " AND " + "kind = " + KIND_SCHEDULE, null);
                 ScheduleLayout[current].removeViewAt((int) id);
-                ScheduleMap.remove(it);
+                ScheduleMap.remove(key);
                 updateSchedule(ScheduleLayout[current], ScheduleMap);
             }
         }
     }
 
-    void updateSchedule(LinearLayout ScheduleLayout, TreeMap<String, LinearLayout> ScheduleMap) {
+    void updateSchedule(LinearLayout
+                                ScheduleLayout, TreeMap<String, LinearLayout> ScheduleMap) {
         Iterator it = ScheduleMap.keySet().iterator();
         long current, currentCreated, reality = 0, wonder = 0, id = 0;
         while (it.hasNext()) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
-            it.next();
-            current = Long.parseLong(it.toString().substring(0, 14));
-            currentCreated = Long.parseLong(it.toString().substring(14, 28));
-            reality = ScheduleMap.get(it).getTop();
-            int topMargin = ((ViewGroup.MarginLayoutParams) ScheduleMap.get(it).getLayoutParams()).topMargin;
+            String key = it.next().toString();
+            current = Long.parseLong(key.substring(0, 14).trim());
+            currentCreated = Long.parseLong(key.substring(14, 28).trim());
+            reality = ScheduleMap.get(key).getTop();
+            int topMargin = ((ViewGroup.MarginLayoutParams) ScheduleMap.get(key).getLayoutParams()).topMargin;
             lp.setMargins(0, (int) Math.max(topMargin - (reality - current), 0), 0, 0);
-            ScheduleMap.get(it).setLayoutParams(lp);
+            ScheduleMap.get(key).setLayoutParams(lp);
         }
     }
 
@@ -209,18 +289,19 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         while (it.hasNext()) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
-            it.next();
-            current = Long.parseLong(it.toString().substring(0, 14));
-            currentCreated = Long.parseLong(it.toString().substring(14, 28));
-            reality = TipMap.get(it).getTop();
-            int topMargin = ((ViewGroup.MarginLayoutParams) TipMap.get(it).getLayoutParams()).topMargin;
+            String key = it.next().toString();
+            current = Long.parseLong(key.substring(0, 14).trim());
+            currentCreated = Long.parseLong(key.substring(14, 28).trim());
+            reality = TipMap.get(key).getTop();
+            int topMargin = ((ViewGroup.MarginLayoutParams) TipMap.get(key).getLayoutParams()).topMargin;
             lp.setMargins(0, (int) Math.max(topMargin - (reality - current), 0), 0, 0);
-            TipMap.get(it).setLayoutParams(lp);
+            TipMap.get(key).setLayoutParams(lp);
         }
     }
 
 
-    void insertSchedule(Map<String, Object> map, LinearLayout ScheduleLayout, TreeMap<String, LinearLayout> ScheduleMap) {
+    void insertSchedule(Map<String, Object> map, LinearLayout
+            ScheduleLayout, TreeMap<String, LinearLayout> ScheduleMap) {
         LayoutInflater flater = LayoutInflater.from(this.getActivity().getApplicationContext());
         LinearLayout newSchedule = (LinearLayout) flater.inflate(R.layout.notepad_listview, ScheduleLayout, false);
         long created, modified, begin, end, finish, kind;
@@ -229,14 +310,14 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
         end = Long.valueOf(String.valueOf(map.get("end")));
-        finish = Long.valueOf(String.valueOf(map.get("begin")));
-        kind = Long.valueOf(String.valueOf(map.get("end")));
+        finish = Long.valueOf(String.valueOf(map.get("finish")));
+        kind = Long.valueOf(String.valueOf(map.get("kind")));
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
-        hint = String.valueOf(map.get("hint"));
+        hint = String.valueOf(map.get("myhint"));
 
-        EditText et = (EditText) newSchedule.findViewById(R.id.EventEditText);
-        et.setText(value);
+        TextView tv = (TextView) newSchedule.findViewById(R.id.EventTextViewM);
+        tv.setText(value);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -246,15 +327,16 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         Iterator it = ScheduleMap.keySet().iterator();
         long current, reality = 0, wonder = (int) (secondLength * TimeUtil.toSecond(begin)), id = 0;
         while (it.hasNext()) {
-            it.next();
-            current = Long.parseLong(it.toString().substring(0, 14));
+            String key = it.next().toString();
+            current = Long.parseLong(key.substring(0, 14).trim());
             if (current > wonder) {
                 break;
             }
-            reality = ScheduleMap.get(it).getTop() + ScheduleMap.get(it).getHeight();
+            reality = ScheduleMap.get(key).getTop() + ScheduleMap.get(key).getHeight();
             ++id;
         }
-        ScheduleMap.put(wonder + "" + created, newSchedule);
+        String key = String.format("%14d%14d", wonder, created);
+        ScheduleMap.put(key, newSchedule);
         lp.setMargins(0, (int) Math.max(wonder - reality, 0), 0, 0);
         newSchedule.setLayoutParams(lp);
 
@@ -262,7 +344,8 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         updateSchedule(ScheduleLayout, ScheduleMap);
     }
 
-    void insertTip(Map<String, Object> map, LinearLayout TipLayout, TreeMap<String, LinearLayout> TipMap) {
+    void insertTip(Map<String, Object> map, LinearLayout
+            TipLayout, TreeMap<String, LinearLayout> TipMap) {
         LayoutInflater flater = LayoutInflater.from(this.getActivity().getApplicationContext());
         LinearLayout newTip = (LinearLayout) flater.inflate(R.layout.notepad_listview, TipLayout, false);
         long created, modified, begin, end, finish, kind;
@@ -271,14 +354,14 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
         end = Long.valueOf(String.valueOf(map.get("end")));
-        finish = Long.valueOf(String.valueOf(map.get("begin")));
-        kind = Long.valueOf(String.valueOf(map.get("end")));
+        finish = Long.valueOf(String.valueOf(map.get("finish")));
+        kind = Long.valueOf(String.valueOf(map.get("kind")));
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
-        hint = String.valueOf(map.get("hint"));
+        hint = String.valueOf(map.get("myhint"));
 
-        EditText et = (EditText) newTip.findViewById(R.id.EventEditText);
-        et.setText(value);
+        TextView tv = (TextView) newTip.findViewById(R.id.EventTextViewM);
+        tv.setText(value);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -288,15 +371,16 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
         Iterator it = TipMap.keySet().iterator();
         long current, reality = 0, wonder = (int) (secondLength * TimeUtil.toSecond(begin)), id = 0;
         while (it.hasNext()) {
-            it.next();
-            current = Long.parseLong(it.toString().substring(0, 14));
+            String key = it.next().toString();
+            current = Long.parseLong(key.substring(0, 14).trim());
             if (current > wonder) {
                 break;
             }
-            reality = TipMap.get(it).getTop() + TipMap.get(it).getHeight();
+            reality = TipMap.get(key).getTop() + TipMap.get(key).getHeight();
             ++id;
         }
-        TipMap.put(wonder + "" + created, newTip);
+        String key = String.format("%14d%14d", wonder, created);
+        TipMap.put(key, newTip);
         lp.setMargins(0, (int) Math.max(wonder - reality, 0), 0, 0);
         newTip.setLayoutParams(lp);
 
@@ -308,14 +392,19 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
 
     }
 
-    void FromSQLToListView(long todayTime, ScrollView Scroll, LinearLayout BothLayout, LinearLayout TipLayout, LinearLayout ScheduleLayout, ImageView imageView,
+    void FromSQLToListView(long todayTime, ScrollView Scroll, LinearLayout
+            BothLayout, LinearLayout TipLayout, LinearLayout ScheduleLayout, ImageView imageView,
                            TreeMap<String, LinearLayout> TipMap, TreeMap<String, LinearLayout> ScheduleMap) {
+        TipLayout.removeAllViews();
+        ScheduleLayout.removeAllViews();
+        TipMap.clear();
+        ScheduleMap.clear();
 
         double yesterdayTime = TimeUtil.getYesterday(todayTime);
         todayTime = TimeUtil.getToday(todayTime);
         double tomorrowTime = TimeUtil.getTomorrow(todayTime);
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind"}, "kind = " + KIND_SCHEDULE +
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_SCHEDULE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {
@@ -331,9 +420,9 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             end = cursor.getLong(cursor.getColumnIndex("end"));
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
-            hint = cursor.getString(cursor.getColumnIndex("hint"));
+            hint = cursor.getString(cursor.getColumnIndex("myhint"));
 
-            map.put("create", created);
+            map.put("created", created);
             map.put("modified", modified);
             map.put("title", title);
             map.put("value", value);
@@ -341,13 +430,13 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             map.put("end", end);
             map.put("finish", finish);
             map.put("kind", kind);
-            map.put("hint", hint);
+            map.put("myhint", hint);
 
             insertSchedule(map, ScheduleLayout, ScheduleMap);
         }
 
         cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind"}, "kind = " + KIND_ADVERTISE +
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_ADVERTISE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {
@@ -363,7 +452,7 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             end = cursor.getLong(cursor.getColumnIndex("end"));
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
-            hint = cursor.getString(cursor.getColumnIndex("hint"));
+            hint = cursor.getString(cursor.getColumnIndex("myhint"));
 
             map.put("created", created);
             map.put("modified", modified);
@@ -373,13 +462,13 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             map.put("end", end);
             map.put("finish", finish);
             map.put("kind", kind);
-            map.put("hint", hint);
+            map.put("myhint", hint);
 
             insertAdvertise(map, imageView);
         }
 
         cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind"}, "kind = " + KIND_TIP +
+                "end", "finish", "kind", "myhint"}, "kind = " + KIND_TIP +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {
@@ -395,7 +484,7 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             end = cursor.getLong(cursor.getColumnIndex("end"));
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
-            hint = cursor.getString(cursor.getColumnIndex("hint"));
+            hint = cursor.getString(cursor.getColumnIndex("myhint"));
 
             map.put("created", created);
             map.put("modified", modified);
@@ -405,86 +494,9 @@ public class ViewPagerFragment2 extends Fragment implements GestureDetector.OnGe
             map.put("end", end);
             map.put("finish", finish);
             map.put("kind", kind);
-            map.put("hint", hint);
+            map.put("myhint", hint);
 
             insertTip(map, TipLayout, TipMap);
         }
-
-
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    private void log_int(float i) {
-        Log.i("utopia_fling", String.valueOf(i));
-    }
-
-
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        //finger move to Up
-        log_int(e1.getY());
-        log_int(e2.getY());
-        log_int(velocityX);
-        log_int(velocityY);
-        if (e1.getY() > e2.getY())
-            if (Scroll[current].getChildAt(0).getMeasuredHeight() <= Scroll[current].getHeight() + Scroll[current].getScrollY()) {
-                mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_in));
-                mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_up_out));
-                mViewFlipper.showNext();
-                current = Next[current];
-                currentTime = TimeUtil.getTomorrow(currentTime);
-                int tomorrow = Next[current];
-                long tomorrowTime = TimeUtil.getTomorrow(currentTime);
-                if (tomorrow == 0)
-                    FromSQLToListView(tomorrowTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], imageView[0], TipMap0, ScheduleMap0);
-                else if (tomorrow == 1)
-                    FromSQLToListView(tomorrowTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], imageView[1], TipMap1, ScheduleMap1);
-                else
-                    FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], imageView[2], TipMap2, ScheduleMap2);
-            } else if (e1.getY() < e2.getY()) {
-                if (Scroll[current].getScrollY() <= 0) {
-                    mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_in));
-                    mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mViewFlipper.getContext(), R.anim.push_down_out));
-                    mViewFlipper.showPrevious();
-                    current = Prev[current];
-                    currentTime = TimeUtil.getYesterday(currentTime);
-                    int yesterday = Prev[current];
-                    long yesterdayTime = TimeUtil.getYesterday(currentTime);
-                    if (yesterday == 0)
-                        FromSQLToListView(yesterdayTime, Scroll[0], BothLayout[0], TipLayout[0], ScheduleLayout[0], imageView[0], TipMap0, ScheduleMap0);
-                    else if (yesterday == 1)
-                        FromSQLToListView(yesterdayTime, Scroll[1], BothLayout[1], TipLayout[1], ScheduleLayout[1], imageView[1], TipMap1, ScheduleMap1);
-                    else
-                        FromSQLToListView(yesterdayTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], imageView[2], TipMap2, ScheduleMap2);
-                }
-            } else {
-                return false;
-            }
-        return true;
     }
 }

@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity {
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if(menuKeyField != null) {
+            if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
                 menuKeyField.setBoolean(config, false);
             }
@@ -69,7 +69,7 @@ public class MainActivity extends FragmentActivity {
         titleList.add("页面3");
         titleList.add("页面4");
 
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(5);
 
         mViewPager.setAdapter(new MyPagerFragmentAdapter(
                 getSupportFragmentManager(), fragmentList, titleList));
@@ -119,7 +119,7 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
-    final public static int REQUEST_STDENTRY = 0;
+    final public static int REQUEST_STDENTRY = 1;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -130,11 +130,8 @@ public class MainActivity extends FragmentActivity {
 
         switch (id) {
             case R.id.action_add:
-/*
                 Intent intent = new Intent(MainActivity.this, STDEntry.class);
                 startActivityForResult(intent, REQUEST_STDENTRY);
-*/
-                new QuickEntry(this).show();
                 break;
             case R.id.action_settings:
 
@@ -166,19 +163,21 @@ public class MainActivity extends FragmentActivity {
         switch (requestCode) {
             case REQUEST_STDENTRY:
                 Bundle bundle = data.getExtras();
-                Map<String, Object> map = new HashMap<String, Object>();
+                if (bundle != null) {
+                    Map<String, Object> map = new HashMap<String, Object>();
 
-                map.put("create", bundle.get("create"));
-                map.put("modified", bundle.get("modified"));
-                map.put("title", bundle.get("title"));
-                map.put("value", bundle.get("value"));
-                map.put("begin", bundle.get("begin"));
-                map.put("end", bundle.get("end"));
-                map.put("finish", bundle.get("finish"));
-                map.put("kind", bundle.get("kind"));
-                map.put("hint", bundle.get("hint"));
-                
-                addEvent(map);
+                    map.put("created", bundle.getLong("created"));
+                    map.put("modified", bundle.getLong("modified"));
+                    map.put("title", bundle.getString("title"));
+                    map.put("value", bundle.getString("value"));
+                    map.put("begin", bundle.getLong("begin"));
+                    map.put("end", bundle.getLong("end"));
+                    map.put("finish", bundle.getLong("finish"));
+                    map.put("kind", bundle.getLong("kind"));
+                    map.put("myhint", bundle.getString("myhint"));
+
+                    addEvent(map);
+                }
                 break;
             default:
                 break;

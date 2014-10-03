@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- From: file:/Users/Joe/Downloads/Utopia-Utopia/library/res/values/themes.xml -->
+    <!-- From: file:/home/chenwenxiao/AndroidStudioProjects/Utopia/library/res/values/themes.xml -->
     <eat-comment />
 
     <attr name="numberPickerStyle" format="reference" />
-    <!-- From: file:/Users/Joe/Downloads/Utopia-Utopia/library/res/values/colors.xml -->
+    <!-- From: file:/home/chenwenxiao/AndroidStudioProjects/Utopia/library/res/values/colors.xml -->
     <eat-comment />
 
     <color name="transparent">#00000000</color>
-    <!-- From: file:/Users/Joe/Downloads/Utopia-Utopia/library/res/values/themes.xml -->
+    <!-- From: file:/home/chenwenxiao/AndroidStudioProjects/Utopia/library/res/values/themes.xml -->
     <eat-comment />
 
     <declare-styleable name="NumberPicker">
@@ -35,12 +35,12 @@
         <!-- @hide The drawable for pressed virtual (increment/decrement) buttons. -->
         <attr name="virtualButtonPressedDrawable" format="reference" />
     </declare-styleable>
-    <!-- From: file:/Users/Joe/Downloads/Utopia-Utopia/library/res/values/ids.xml -->
+    <!-- From: file:/home/chenwenxiao/AndroidStudioProjects/Utopia/library/res/values/ids.xml -->
     <eat-comment />
 
     <item name="np__decrement" type="id"/>
     <item name="np__increment" type="id"/>
-    <!-- From: file:/Users/Joe/Downloads/Utopia-Utopia/library/res/values/themes.xml -->
+    <!-- From: file:/home/chenwenxiao/AndroidStudioProjects/Utopia/library/res/values/themes.xml -->
     <eat-comment />
 
     <style name="NPWidget">

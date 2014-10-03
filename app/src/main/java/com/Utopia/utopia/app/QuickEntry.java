@@ -36,6 +36,49 @@ public class QuickEntry extends AlertDialog {
 
     }
 
+    HashMap<String, Object> getContent()
+    {
+
+        long created, modified, begin, end, finish, kind,
+                beginHour, beginMinute, endHour, endMinute;
+        String title, value, hint;
+        beginHour = picker01.getValue();
+        beginMinute = picker02.getValue();
+        endHour = picker11.getValue();
+        endMinute = picker12.getValue();
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        created = TimeUtil.getCurrentTime();
+        modified = TimeUtil.getCurrentTime();
+        if (setTitle) title = editText.getText().toString();
+        else title = "未命名";
+        value = "";
+
+        begin = TimeUtil.getToday(created) + 10000 * beginHour + 100 * beginMinute;
+        if (setEnd) end = TimeUtil.getToday(created) + 10000 * endHour + 100 * endMinute;
+        else end = TimeUtil.ENDOfWORLD;
+
+        hint = "";
+
+        finish = 0;
+        kind = DataProviderMetaData.DataTableMetaData.KIND_EVENT;
+
+        map.put("created", created);
+        map.put("modified", modified);
+        map.put("title", title);
+        map.put("value", value);
+        map.put("begin", begin);
+        map.put("end", end);
+        map.put("finish", finish);
+        map.put("kind", kind);
+        map.put("myhint", hint);
+
+        return map;
+        //dismiss : ((ViewPagerFragment2)(((MainActivity) getOwnerActivity()).fragmentList.get(2))).addEvent(map);
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,43 +137,6 @@ public class QuickEntry extends AlertDialog {
             @Override
             public void onClick(View v) {
                 //TODO retrieve and store the data when clicked;
-                long created, modified, begin, end, finish, kind,
-                        beginHour, beginSecond, endHour, endSecond;
-                String title, value, hint;
-                beginHour = picker01.getValue();
-                beginSecond = picker02.getValue();
-                endHour = picker11.getValue();
-                endSecond = picker12.getValue();
-
-                HashMap<String, Object> map = new HashMap<String, Object>();
-
-                created = TimeUtil.getCurrentTime();
-                modified = TimeUtil.getCurrentTime();
-                if (setTitle) title = editText.getText().toString();
-                else title = "未命名";
-                value = "";
-
-                begin = TimeUtil.getToday(created) % 10000 + 100 * beginHour + beginSecond;
-                if (setEnd) end = TimeUtil.getToday(created) % 10000 + 100 * endHour + endSecond;
-                else end = TimeUtil.ENDOfWORLD;
-
-                hint = "";
-
-                finish = 0;
-                kind = DataProviderMetaData.DataTableMetaData.KIND_EVENT;
-
-                map.put("created", created);
-                map.put("modified", modified);
-                map.put("title", title);
-                map.put("value", value);
-                map.put("begin", begin);
-                map.put("end", end);
-                map.put("finish", finish);
-                map.put("kind", kind);
-                map.put("hint", hint);
-
-                ((ViewPagerFragment2)(((MainActivity) getOwnerActivity()).fragmentList.get(2))).addEvent(map);
-
                 dismiss();
             }
         });
