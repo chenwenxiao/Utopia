@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:NumberPicker="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/quick_entry_bg"
+    android:background="@color/lightPink"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/quick_entry_linear_layout"

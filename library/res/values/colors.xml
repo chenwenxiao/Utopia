@@ -2,4 +2,5 @@
 <resources>
 
     <color name="transparent">#00000000</color>
+    <color name="lightPink">#e3d3d0</color>
 </resources>

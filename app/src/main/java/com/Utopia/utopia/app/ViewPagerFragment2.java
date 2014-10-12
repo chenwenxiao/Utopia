@@ -4,6 +4,10 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +26,9 @@ import android.widget.ViewFlipper;
 
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.Format;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,7 +50,7 @@ public class ViewPagerFragment2 extends Fragment {
 
     private ViewFlipper mViewFlipper;
     private ScrollView Scroll[];
-    private LinearLayout BothLayout[], TipLayout[], ScheduleLayout[];
+    private LinearLayout BothLayout[], TipLayout[], ScheduleLayout[],TimeLineLayout[];
     private ImageView imageView[];
     ContentResolver cr;
     double secondLength;
@@ -80,6 +87,12 @@ public class ViewPagerFragment2 extends Fragment {
                 (LinearLayout) view.findViewById(R.id.page2Scroll0ScheduleLayout),
                 (LinearLayout) view.findViewById(R.id.page2Scroll1ScheduleLayout),
                 (LinearLayout) view.findViewById(R.id.page2Scroll2ScheduleLayout)};
+        TimeLineLayout = new LinearLayout[]{
+                (LinearLayout) view.findViewById(R.id.page2Scroll0TimeLine),
+                (LinearLayout) view.findViewById(R.id.page2Scroll1TimeLine),
+                (LinearLayout) view.findViewById(R.id.page2Scroll2TimeLine),};
+
+        buildTimeLine();
 
         for (int i = 0; i < 3; ++i) {
             Scroll[i].setLongClickable(true);
@@ -153,7 +166,7 @@ public class ViewPagerFragment2 extends Fragment {
         imageView = new ImageView[]{
                 null, null, null
         };
-        ImageView TimeLine = (ImageView) view.findViewById(R.id.page2Scroll1TimeLine);
+        LinearLayout TimeLine = (LinearLayout) view.findViewById(R.id.page2Scroll1TimeLine);
         secondLength = TimeLine.getHeight() / 86400.0;
 
         TipMap0 = new TreeMap<String, LinearLayout>();
@@ -497,6 +510,36 @@ public class ViewPagerFragment2 extends Fragment {
             map.put("myhint", hint);
 
             insertTip(map, TipLayout, TipMap);
+        }
+    }
+    private void buildTimeLine()
+    {
+        Bitmap source = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.time_line_6_am);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        source.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+        try {
+            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()),true);
+            int regionCount = 3;
+            int height = decoder.getHeight() / regionCount;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            for(int i = 0;i < 3;i++) {
+                TimeLineLayout[i].removeAllViews();
+            }
+            for(int i = 0;i < regionCount;i++) {
+                Bitmap bitmap;
+                if(i == regionCount-1) {
+                    bitmap = decoder.decodeRegion(new Rect(0, i * height, decoder.getWidth(),decoder.getHeight()), null);
+                } else {
+                    bitmap = decoder.decodeRegion(new Rect(0, i * height, decoder.getWidth(), (i + 1) * height), null);
+                }
+                for(int j = 0;j < 3;j++) {
+                    ImageView imageView= new ImageView(getActivity().getApplicationContext());
+                    imageView.setImageBitmap(bitmap);
+                    imageView.setLayoutParams(params);
+                    TimeLineLayout[j].addView(imageView);
+                }
+            }
+        } catch (IOException e) {
         }
     }
 }

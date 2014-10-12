@@ -96,13 +96,19 @@ public class ViewPagerFragment0 extends Fragment {
     public void addEntry(String value) {
         if (!value.equals("")) {
             ContentValues cv = new ContentValues();
+            long marginLeft = Double.valueOf(70 * Math.random() + 30).longValue();
+            long marginRight = Double.valueOf(70 * Math.random() + 30).longValue();
             cv.put("value", value);
             cv.put("kind", KIND_NOTE);
+            cv.put("created",marginLeft);
+            cv.put("end",marginRight);
             cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("value", value);
             map.put("kind", KIND_NOTE);
+            map.put("created",marginLeft);
+            map.put("end",marginRight);
             listResource.add(map);
             lv0.invalidateViews();
         }
@@ -112,20 +118,22 @@ public class ViewPagerFragment0 extends Fragment {
     public void FromSQLToListView() {
         Uri uri = DataProviderMetaData.DataTableMetaData.CONTENT_URI;
 
-        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "value", "kind"}, "kind = " + KIND_NOTE, null, "created asc");
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "value", "kind","end"}, "kind = " + KIND_NOTE, null, "created asc");
 
-        Log.i("utopia", String.valueOf(cursor == null));
-
+        //Log.i("utopia", String.valueOf(cursor == null));
+        listResource.clear();
         while (cursor.moveToNext()) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("created", cursor.getLong(cursor.getColumnIndex("created")));
             map.put("value", cursor.getString(cursor.getColumnIndex("value")));
+            map.put("end",cursor.getLong(cursor.getColumnIndex("end")));
             listResource.add(map);
         }
-        cursor.close();
-        sa = new SimpleAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listview,
-                new String[]{"value"}, new int[]{R.id.EventTextViewM});
+
+        sa = new NotePadListItemAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listitem,null,null);
+        //sa = new NotePadListItemAdapter(getActivity().getApplicationContext(),R.layout.notepad_listitem,listResource);
         lv0.setAdapter(sa);
+        cursor.close();
     }
 
 

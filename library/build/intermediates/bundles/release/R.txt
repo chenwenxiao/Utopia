@@ -9,7 +9,8 @@ int attr selectionDividerHeight 0x7f010003
 int attr selectionDividersDistance 0x7f010004
 int attr solidColor 0x7f010001
 int attr virtualButtonPressedDrawable 0x7f01000a
-int color transparent 0x7f040000
+int color lightPink 0x7f040000
+int color transparent 0x7f040001
 int drawable item_background_holo_dark 0x7f020000
 int drawable item_background_holo_light 0x7f020001
 int drawable list_focused_holo 0x7f020002

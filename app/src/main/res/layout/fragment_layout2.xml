@@ -43,10 +43,10 @@
                         android:layout_weight="1"
                         android:id="@+id/page2Scroll0TipLayout"></LinearLayout>
 
-                    <ImageView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/time_line_6_am"
                         android:id="@+id/page2Scroll0TimeLine" />
 
                     <LinearLayout
@@ -89,10 +89,10 @@
                         android:layout_weight="1"
                         android:id="@+id/page2Scroll1TipLayout"></LinearLayout>
 
-                    <ImageView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/time_line_6_am"
                         android:id="@+id/page2Scroll1TimeLine" />
 
                     <LinearLayout
@@ -135,10 +135,10 @@
                         android:layout_weight="1"
                         android:id="@+id/page2Scroll2TipLayout"></LinearLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/time_line_6_am"
+                    <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                         android:id="@+id/page2Scroll2TimeLine" />
 
                     <LinearLayout
