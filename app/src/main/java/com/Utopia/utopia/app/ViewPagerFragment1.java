@@ -46,6 +46,7 @@ public class ViewPagerFragment1 extends Fragment {
         count = 0;
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
                 "end", "finish", "kind", "myhint"}, "kind = " + KIND_SCHEDULE, null, "begin asc");
+        listResource.clear();
 
         while (cursor.moveToNext()) {
             ++count;

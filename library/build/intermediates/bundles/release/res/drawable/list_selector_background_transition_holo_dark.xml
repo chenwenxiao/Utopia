@@ -18,4 +18,4 @@
     <item android:drawable="@drawable/list_pressed_holo_dark"  />
     <item android:drawable="@drawable/list_longpressed_holo"  />
 </transition>
-<!-- From: file:/Users/Joe/Downloads/Utopia-master%202/library/res/drawable/list_selector_background_transition_holo_dark.xml -->
+<!-- From: file:/home/chenwenxiao/AndroidStudioProjects/Utopia/library/res/drawable/list_selector_background_transition_holo_dark.xml -->

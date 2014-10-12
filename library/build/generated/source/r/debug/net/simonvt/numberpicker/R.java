@@ -103,7 +103,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static int virtualButtonPressedDrawable=0x7f01000a;
     }
     public static final class color {
-        public static int transparent=0x7f040000;
+        public static int lightPink=0x7f040000;
+        public static int transparent=0x7f040001;
     }
     public static final class drawable {
         public static int item_background_holo_dark=0x7f020000;

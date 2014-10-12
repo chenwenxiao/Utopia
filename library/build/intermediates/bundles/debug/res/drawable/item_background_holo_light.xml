@@ -24,4 +24,4 @@
     <item android:state_focused="true"                                                             android:drawable="@drawable/list_focused_holo" />
     <item                                                                                          android:drawable="@color/transparent" />
 </selector>
-<!-- From: file:/Users/Joe/Downloads/Utopia-master%202/library/res/drawable/item_background_holo_light.xml -->
+<!-- From: file:/home/chenwenxiao/AndroidStudioProjects/Utopia/library/res/drawable/item_background_holo_light.xml -->

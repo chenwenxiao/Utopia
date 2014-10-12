@@ -58,6 +58,8 @@ public class ViewPagerFragment2 extends Fragment {
     long currentTime;
     TreeMap<String, LinearLayout> TipMap0, TipMap1, TipMap2, ScheduleMap0, ScheduleMap1, ScheduleMap2;
     QuickEntry qe;
+    int imageLength;
+    int startTime = 6;
 
     public ViewPagerFragment2() {
         super();
@@ -166,8 +168,8 @@ public class ViewPagerFragment2 extends Fragment {
         imageView = new ImageView[]{
                 null, null, null
         };
-        LinearLayout TimeLine = (LinearLayout) view.findViewById(R.id.page2Scroll1TimeLine);
-        secondLength = TimeLine.getHeight() / 86400.0;
+        secondLength = imageLength / 86400.0;
+        Log.v("DEBUG", String.valueOf(secondLength));
 
         TipMap0 = new TreeMap<String, LinearLayout>();
         TipMap1 = new TreeMap<String, LinearLayout>();
@@ -212,6 +214,19 @@ public class ViewPagerFragment2 extends Fragment {
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
 
+        if (begin % 1000000 < startTime * 1000000)
+            begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
+        else
+            begin = begin % 1000000 + currentTime;
+
+        if (end % 1000000 < startTime * 1000000)
+            end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
+        else
+            end = end % 1000000 + currentTime;
+
+        map.put("begin", begin);
+        map.put("end", end);
+
         ContentValues cv = new ContentValues();
         cv.put("created", created);
         cv.put("begin", begin);
@@ -233,6 +248,7 @@ public class ViewPagerFragment2 extends Fragment {
             else if (current == 1) insertTip(map, TipLayout[1], TipMap1);
             else insertTip(map, TipLayout[2], TipMap2);
         }
+        ((ViewPagerFragment1)((MainActivity) getActivity()).fragmentList.get(1)).FromSQLToListView();
     }
 
     void deleteEvent(LinearLayout Layout) {
@@ -242,7 +258,8 @@ public class ViewPagerFragment2 extends Fragment {
         else TipMap = TipMap2;
 
         Iterator it = TipMap.keySet().iterator();
-        long currentCreated, id = 0;
+        long currentCreated, id;
+        id = 0;
         while (it.hasNext()) {
             String key = it.next().toString();
             ++id;
@@ -338,7 +355,7 @@ public class ViewPagerFragment2 extends Fragment {
 
         //20140816105401
         Iterator it = ScheduleMap.keySet().iterator();
-        long current, reality = 0, wonder = (int) (secondLength * TimeUtil.toSecond(begin)), id = 0;
+        long current, reality = 0, wonder = (int) (secondLength * ((TimeUtil.toSecond(begin) - startTime * 3600 + 86400) % 86400)), id = 0;
         while (it.hasNext()) {
             String key = it.next().toString();
             current = Long.parseLong(key.substring(0, 14).trim());
@@ -382,7 +399,7 @@ public class ViewPagerFragment2 extends Fragment {
 
         //20140816105401
         Iterator it = TipMap.keySet().iterator();
-        long current, reality = 0, wonder = (int) (secondLength * TimeUtil.toSecond(begin)), id = 0;
+        long current, reality = 0, wonder = (int) (secondLength * ((TimeUtil.toSecond(begin) - startTime * 3600 + 86400) % 86400)), id = 0;
         while (it.hasNext()) {
             String key = it.next().toString();
             current = Long.parseLong(key.substring(0, 14).trim());
@@ -413,9 +430,9 @@ public class ViewPagerFragment2 extends Fragment {
         TipMap.clear();
         ScheduleMap.clear();
 
-        double yesterdayTime = TimeUtil.getYesterday(todayTime);
-        todayTime = TimeUtil.getToday(todayTime);
-        double tomorrowTime = TimeUtil.getTomorrow(todayTime);
+        double yesterdayTime = TimeUtil.getYesterday(todayTime) + startTime * 10000;
+        todayTime = TimeUtil.getToday(todayTime) + startTime * 10000;
+        double tomorrowTime = TimeUtil.getTomorrow(todayTime) + startTime * 10000;
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
                 "end", "finish", "kind", "myhint"}, "kind = " + KIND_SCHEDULE +
                 " AND " + "(begin < " + tomorrowTime +
@@ -519,6 +536,7 @@ public class ViewPagerFragment2 extends Fragment {
         source.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
         try {
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()),true);
+            imageLength = decoder.getHeight();
             int regionCount = 3;
             int height = decoder.getHeight() / regionCount;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
