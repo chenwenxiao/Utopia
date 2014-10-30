@@ -160,27 +160,29 @@ public class MainActivity extends FragmentActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_STDENTRY:
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    Map<String, Object> map = new HashMap<String, Object>();
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_STDENTRY:
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        Map<String, Object> map = new HashMap<String, Object>();
 
-                    map.put("created", bundle.getLong("created"));
-                    map.put("modified", bundle.getLong("modified"));
-                    map.put("title", bundle.getString("title"));
-                    map.put("value", bundle.getString("value"));
-                    map.put("begin", bundle.getLong("begin"));
-                    map.put("end", bundle.getLong("end"));
-                    map.put("finish", bundle.getLong("finish"));
-                    map.put("kind", bundle.getLong("kind"));
-                    map.put("myhint", bundle.getString("myhint"));
+                        map.put("created", bundle.getLong("created"));
+                        map.put("modified", bundle.getLong("modified"));
+                        map.put("title", bundle.getString("title"));
+                        map.put("value", bundle.getString("value"));
+                        map.put("begin", bundle.getLong("begin"));
+                        map.put("end", bundle.getLong("end"));
+                        map.put("finish", bundle.getLong("finish"));
+                        map.put("kind", bundle.getLong("kind"));
+                        map.put("myhint", bundle.getString("myhint"));
 
-                    addEvent(map);
-                }
-                break;
-            default:
-                break;
+                        addEvent(map);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

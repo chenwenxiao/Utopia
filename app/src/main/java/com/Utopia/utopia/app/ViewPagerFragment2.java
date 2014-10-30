@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
@@ -50,7 +51,7 @@ public class ViewPagerFragment2 extends Fragment {
 
     private ViewFlipper mViewFlipper;
     private ScrollView Scroll[];
-    private LinearLayout BothLayout[], TipLayout[], ScheduleLayout[],TimeLineLayout[];
+    private LinearLayout BothLayout[], TipLayout[], ScheduleLayout[], TimeLineLayout[];
     private ImageView imageView[];
     ContentResolver cr;
     double secondLength;
@@ -165,11 +166,29 @@ public class ViewPagerFragment2 extends Fragment {
             });
         }
 
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (current == 0) {
+                    updateScheduleLayput(ScheduleLayout[0], ScheduleMap0);
+                    updateTipLayput(TipLayout[0], TipMap0);
+                }
+                if (current == 1) {
+                    updateScheduleLayput(ScheduleLayout[0], ScheduleMap0);
+                    updateTipLayput(TipLayout[0], TipMap0);
+                }
+                if (current == 2) {
+                    updateScheduleLayput(ScheduleLayout[0], ScheduleMap0);
+                    updateTipLayput(TipLayout[0], TipMap0);
+                }
+                Toast.makeText(getActivity(), "获得焦点", Toast.LENGTH_LONG).show();
+            }
+        });
+
         imageView = new ImageView[]{
                 null, null, null
         };
         secondLength = imageLength / 86400.0;
-        Log.v("DEBUG", String.valueOf(secondLength));
 
         TipMap0 = new TreeMap<String, LinearLayout>();
         TipMap1 = new TreeMap<String, LinearLayout>();
@@ -185,9 +204,12 @@ public class ViewPagerFragment2 extends Fragment {
                 yesterdayTime;
 
         currentTime = TimeUtil.getCurrentTime();
-        yesterdayTime = TimeUtil.getYesterday(currentTime);
         todayTime = TimeUtil.getToday(currentTime);
-        tomorrowTime = TimeUtil.getTomorrow(currentTime);
+        if (currentTime % 1000000 < startTime * 10000) todayTime = TimeUtil.getYesterday(todayTime);
+
+        yesterdayTime = TimeUtil.getYesterday(todayTime);
+        todayTime = TimeUtil.getToday(todayTime);
+        tomorrowTime = TimeUtil.getTomorrow(todayTime);
 
         current = 1;
         currentTime = todayTime;
@@ -214,12 +236,12 @@ public class ViewPagerFragment2 extends Fragment {
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
 
-        if (begin % 1000000 < startTime * 1000000)
+        if (begin % 1000000 < startTime * 10000)
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
         else
             begin = begin % 1000000 + currentTime;
 
-        if (end % 1000000 < startTime * 1000000)
+        if (end % 1000000 < startTime * 10000)
             end = end % 1000000 + TimeUtil.getTomorrow(currentTime);
         else
             end = end % 1000000 + currentTime;
@@ -248,7 +270,7 @@ public class ViewPagerFragment2 extends Fragment {
             else if (current == 1) insertTip(map, TipLayout[1], TipMap1);
             else insertTip(map, TipLayout[2], TipMap2);
         }
-        ((ViewPagerFragment1)((MainActivity) getActivity()).fragmentList.get(1)).FromSQLToListView();
+        ((ViewPagerFragment1) ((MainActivity) getActivity()).fragmentList.get(1)).FromSQLToListView();
     }
 
     void deleteEvent(LinearLayout Layout) {
@@ -270,7 +292,6 @@ public class ViewPagerFragment2 extends Fragment {
                                 + " AND " + "kind = " + KIND_TIP, null);
                 TipLayout[current].removeViewAt((int) id);
                 TipMap.remove(key);
-                updateTip(TipLayout[current], TipMap);
             }
         }
 
@@ -291,41 +312,26 @@ public class ViewPagerFragment2 extends Fragment {
                                 + " AND " + "kind = " + KIND_SCHEDULE, null);
                 ScheduleLayout[current].removeViewAt((int) id);
                 ScheduleMap.remove(key);
-                updateSchedule(ScheduleLayout[current], ScheduleMap);
             }
         }
     }
 
-    void updateSchedule(LinearLayout
-                                ScheduleLayout, TreeMap<String, LinearLayout> ScheduleMap) {
+    void updateScheduleLayput(LinearLayout ScheduleLayout, TreeMap<String, LinearLayout> ScheduleMap) {
         Iterator it = ScheduleMap.keySet().iterator();
-        long current, currentCreated, reality = 0, wonder = 0, id = 0;
+        long current = 0, last = 0;
         while (it.hasNext()) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
             String key = it.next().toString();
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) ScheduleMap.get(key).getLayoutParams();
             current = Long.parseLong(key.substring(0, 14).trim());
-            currentCreated = Long.parseLong(key.substring(14, 28).trim());
-            reality = ScheduleMap.get(key).getTop();
-            int topMargin = ((ViewGroup.MarginLayoutParams) ScheduleMap.get(key).getLayoutParams()).topMargin;
-            lp.setMargins(0, (int) Math.max(topMargin - (reality - current), 0), 0, 0);
-            ScheduleMap.get(key).setLayoutParams(lp);
-        }
-    }
 
-    void updateTip(LinearLayout TipLayout, TreeMap<String, LinearLayout> TipMap) {
-        Iterator it = TipMap.keySet().iterator();
-        long current, currentCreated, reality = 0, wonder = 0, id = 0;
-        while (it.hasNext()) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            String key = it.next().toString();
-            current = Long.parseLong(key.substring(0, 14).trim());
-            currentCreated = Long.parseLong(key.substring(14, 28).trim());
-            reality = TipMap.get(key).getTop();
-            int topMargin = ((ViewGroup.MarginLayoutParams) TipMap.get(key).getLayoutParams()).topMargin;
-            lp.setMargins(0, (int) Math.max(topMargin - (reality - current), 0), 0, 0);
-            TipMap.get(key).setLayoutParams(lp);
+            lp.setMargins(0, (int)Math.max(0, current - last), 0, 0);
+            ScheduleMap.get(key).setLayoutParams(lp);
+
+            last = current + lp.height;
+            Log.v("DEBUG", String.valueOf(lp.height));
+//
+//            ScheduleMap.get(key).setX((int) current);
+
         }
     }
 
@@ -349,10 +355,6 @@ public class ViewPagerFragment2 extends Fragment {
         TextView tv = (TextView) newSchedule.findViewById(R.id.EventTextViewM);
         tv.setText(value);
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
         //20140816105401
         Iterator it = ScheduleMap.keySet().iterator();
         long current, reality = 0, wonder = (int) (secondLength * ((TimeUtil.toSecond(begin) - startTime * 3600 + 86400) % 86400)), id = 0;
@@ -362,17 +364,33 @@ public class ViewPagerFragment2 extends Fragment {
             if (current > wonder) {
                 break;
             }
-            reality = ScheduleMap.get(key).getTop() + ScheduleMap.get(key).getHeight();
             ++id;
         }
+
         String key = String.format("%14d%14d", wonder, created);
         ScheduleMap.put(key, newSchedule);
-        lp.setMargins(0, (int) Math.max(wonder - reality, 0), 0, 0);
-        newSchedule.setLayoutParams(lp);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, 0);
+        ScheduleMap.get(key).setLayoutParams(lp);
 
         ScheduleLayout.addView(newSchedule, (int) id);
-        updateSchedule(ScheduleLayout, ScheduleMap);
+
+        updateScheduleLayput(ScheduleLayout, ScheduleMap);
     }
+
+
+    void updateTipLayput(LinearLayout TipLayout, TreeMap<String, LinearLayout> TipMap) {
+        Iterator it = TipMap.keySet().iterator();
+        long current;
+        while (it.hasNext()) {
+            String key = it.next().toString();
+            current = Long.parseLong(key.substring(0, 14).trim());
+            TipMap.get(key).setTop((int) current);
+        }
+    }
+
 
     void insertTip(Map<String, Object> map, LinearLayout
             TipLayout, TreeMap<String, LinearLayout> TipMap) {
@@ -393,10 +411,6 @@ public class ViewPagerFragment2 extends Fragment {
         TextView tv = (TextView) newTip.findViewById(R.id.EventTextViewM);
         tv.setText(value);
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
         //20140816105401
         Iterator it = TipMap.keySet().iterator();
         long current, reality = 0, wonder = (int) (secondLength * ((TimeUtil.toSecond(begin) - startTime * 3600 + 86400) % 86400)), id = 0;
@@ -406,16 +420,15 @@ public class ViewPagerFragment2 extends Fragment {
             if (current > wonder) {
                 break;
             }
-            reality = TipMap.get(key).getTop() + TipMap.get(key).getHeight();
             ++id;
         }
+
         String key = String.format("%14d%14d", wonder, created);
         TipMap.put(key, newTip);
-        lp.setMargins(0, (int) Math.max(wonder - reality, 0), 0, 0);
-        newTip.setLayoutParams(lp);
 
         TipLayout.addView(newTip, (int) id);
-        updateTip(TipLayout, TipMap);
+
+        updateTipLayput(TipLayout, TipMap);
     }
 
     void insertAdvertise(Map<String, Object> map, ImageView imageView) {
@@ -436,7 +449,7 @@ public class ViewPagerFragment2 extends Fragment {
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
                 "end", "finish", "kind", "myhint"}, "kind = " + KIND_SCHEDULE +
                 " AND " + "(begin < " + tomorrowTime +
-                " AND " + "begin >= " + todayTime + ")", null, "begin asc");
+                " AND " + "begin >= " + todayTime + ")", null, "begin ASC");
         while (cursor.moveToNext()) {
             Map<String, Object> map = new HashMap<String, Object>();
             long created, modified, begin, end, finish, kind;
@@ -529,29 +542,29 @@ public class ViewPagerFragment2 extends Fragment {
             insertTip(map, TipLayout, TipMap);
         }
     }
-    private void buildTimeLine()
-    {
+
+    private void buildTimeLine() {
         Bitmap source = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.time_line_6_am);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        source.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+        source.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         try {
-            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()),true);
+            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()), true);
             imageLength = decoder.getHeight();
             int regionCount = 3;
             int height = decoder.getHeight() / regionCount;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            for(int i = 0;i < 3;i++) {
+            for (int i = 0; i < 3; i++) {
                 TimeLineLayout[i].removeAllViews();
             }
-            for(int i = 0;i < regionCount;i++) {
+            for (int i = 0; i < regionCount; i++) {
                 Bitmap bitmap;
-                if(i == regionCount-1) {
-                    bitmap = decoder.decodeRegion(new Rect(0, i * height, decoder.getWidth(),decoder.getHeight()), null);
+                if (i == regionCount - 1) {
+                    bitmap = decoder.decodeRegion(new Rect(0, i * height, decoder.getWidth(), decoder.getHeight()), null);
                 } else {
                     bitmap = decoder.decodeRegion(new Rect(0, i * height, decoder.getWidth(), (i + 1) * height), null);
                 }
-                for(int j = 0;j < 3;j++) {
-                    ImageView imageView= new ImageView(getActivity().getApplicationContext());
+                for (int j = 0; j < 3; j++) {
+                    ImageView imageView = new ImageView(getActivity().getApplicationContext());
                     imageView.setImageBitmap(bitmap);
                     imageView.setLayoutParams(params);
                     TimeLineLayout[j].addView(imageView);
