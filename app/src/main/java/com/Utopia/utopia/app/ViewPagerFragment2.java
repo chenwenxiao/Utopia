@@ -145,6 +145,7 @@ public class ViewPagerFragment2 extends Fragment {
                                         FromSQLToListView(yesterdayTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], imageView[2], TipMap2, ScheduleMap2);
                                 }
                             }
+                            changeTitle();
                             break;
                     }
                     return false;
@@ -220,7 +221,14 @@ public class ViewPagerFragment2 extends Fragment {
 
         FromSQLToListView(tomorrowTime, Scroll[2], BothLayout[2], TipLayout[2], ScheduleLayout[2], imageView[2], TipMap2, ScheduleMap2);
 
+
+        changeTitle();
         return view;
+    }
+
+    void changeTitle() {
+        String title = TimeUtil.toLunar(currentTime);
+        getActivity().setTitle(title);
     }
 
     void addEvent(Map<String, Object> map) {
@@ -289,7 +297,8 @@ public class ViewPagerFragment2 extends Fragment {
             if (TipMap.get(key) == Layout) {
                 cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI,
                         "created = " + currentCreated
-                                + " AND " + "kind = " + KIND_TIP, null);
+                                + " AND " + "kind = " + KIND_TIP, null
+                );
                 TipLayout[current].removeViewAt((int) id);
                 TipMap.remove(key);
             }
@@ -309,7 +318,8 @@ public class ViewPagerFragment2 extends Fragment {
             if (ScheduleMap.get(key) == Layout) {
                 cr.delete(DataProviderMetaData.DataTableMetaData.CONTENT_URI,
                         "created = " + currentCreated
-                                + " AND " + "kind = " + KIND_SCHEDULE, null);
+                                + " AND " + "kind = " + KIND_SCHEDULE, null
+                );
                 ScheduleLayout[current].removeViewAt((int) id);
                 ScheduleMap.remove(key);
             }
@@ -324,7 +334,7 @@ public class ViewPagerFragment2 extends Fragment {
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) ScheduleMap.get(key).getLayoutParams();
             current = Long.parseLong(key.substring(0, 14).trim());
 
-            lp.setMargins(0, (int)Math.max(0, current - last), 0, 0);
+            lp.setMargins(0, (int) Math.max(0, current - last), 0, 0);
             ScheduleMap.get(key).setLayoutParams(lp);
 
             last = current + lp.height;
@@ -478,8 +488,7 @@ public class ViewPagerFragment2 extends Fragment {
             insertSchedule(map, ScheduleLayout, ScheduleMap);
         }
 
-        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint"}, "kind = " + KIND_ADVERTISE +
+        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin", "end", "finish", "kind", "myhint"}, "kind = " + KIND_ADVERTISE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {

@@ -2,7 +2,10 @@ package com.Utopia.utopia.app;
 
 import android.util.Log;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by Administrator on 2014/8/3 0003.
@@ -116,6 +119,29 @@ public class TimeUtil {
         long minute = time / 100L;
         time %= 100L;
         long second = time;
-        return (int)(hour * 3600 + minute * 60 + second);
+        return (int) (hour * 3600 + minute * 60 + second);
+    }
+
+    public static String toLunar(long time) {
+        long year = time / 10000000000L;
+        time %= 10000000000L;
+        long month = time / 100000000L;
+        time %= 100000000L;
+        long date = time / 1000000L;
+        Lunar lunar;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, (int) year);
+        cal.set(Calendar.MONTH, (int) month - 1);
+        cal.set(Calendar.DATE, (int) date);
+        SimpleDateFormat sdf = new SimpleDateFormat(" MM月dd日");
+        cal.setTimeZone(TimeZone.getDefault());
+
+        lunar = new Lunar(cal);
+
+        return lunar.toString() + sdf.format(cal.getTime());
+        //这是一起回传的代码
+
+        //return lunar.toString();
     }
 }
