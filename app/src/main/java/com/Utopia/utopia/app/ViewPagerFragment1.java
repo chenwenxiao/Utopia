@@ -52,6 +52,7 @@ public class ViewPagerFragment1 extends Fragment {
             ++count;
             Map<String, Object> map = new HashMap<String, Object>();
             long create, modified, begin, end, finish, kind;
+            byte[] bitmap;
             String title, value, hint;
 
             create = cursor.getLong(cursor.getColumnIndex("created"));
@@ -63,6 +64,7 @@ public class ViewPagerFragment1 extends Fragment {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
+            bitmap = cursor.getBlob(cursor.getColumnIndex("bitmap"));
 
             map.put("created", create);
             map.put("modified", modified);

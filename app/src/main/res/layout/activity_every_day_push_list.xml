@@ -10,22 +10,14 @@
     tools:context="com.Utopia.utopia.app.EveryDayPushListActivity">
 
 
-    <com.Utopia.utopia.app.EveryDayPushView
+    <ListView
+        android:id="@+id/every_day_push_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></com.Utopia.utopia.app.EveryDayPushView>
-    <com.Utopia.utopia.app.EveryDayPushView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></com.Utopia.utopia.app.EveryDayPushView>
-    <com.Utopia.utopia.app.EveryDayPushView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></com.Utopia.utopia.app.EveryDayPushView>
-    <com.Utopia.utopia.app.EveryDayPushView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></com.Utopia.utopia.app.EveryDayPushView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:stackFromBottom="true"
+        android:divider="@null"
+        />
 
 
 </LinearLayout>

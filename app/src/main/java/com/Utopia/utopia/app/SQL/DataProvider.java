@@ -48,6 +48,8 @@ public class DataProvider extends ContentProvider {
                 DataProviderMetaData.DataTableMetaData.DATA_KIND);
         sDataProjectionMap.put(DataProviderMetaData.DataTableMetaData.DATA_HINT,
                 DataProviderMetaData.DataTableMetaData.DATA_HINT);
+        sDataProjectionMap.put(DataProviderMetaData.DataTableMetaData.DATA_BITMAP,
+                DataProviderMetaData.DataTableMetaData.DATA_BITMAP);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -138,6 +140,8 @@ public class DataProvider extends ContentProvider {
             values.put(DataProviderMetaData.DataTableMetaData.DATA_KIND, DataProviderMetaData.DataTableMetaData.KIND_NONE);
         if (values.containsKey(DataProviderMetaData.DataTableMetaData.DATA_HINT) == false)
             values.put(DataProviderMetaData.DataTableMetaData.DATA_HINT, "");
+        if (values.containsKey(DataProviderMetaData.DataTableMetaData.DATA_BITMAP) == false)
+            values.put(DataProviderMetaData.DataTableMetaData.DATA_BITMAP, new byte[]{});
 
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();

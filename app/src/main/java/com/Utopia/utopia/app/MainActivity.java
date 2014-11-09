@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
-import android.view.Window;
-import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -62,16 +59,14 @@ public class MainActivity extends FragmentActivity {
         fragmentList.add(new ViewPagerFragment1());
         fragmentList.add(new ViewPagerFragment2());
         fragmentList.add(new ViewPagerFragment3());
-        fragmentList.add(new ViewPagerFragment4());
 
         titleList = new ArrayList<String>();// 每个页面的Title数据
-        titleList.add("页面0");
-        titleList.add("页面1");
-        titleList.add("页面2");
-        titleList.add("页面3");
-        titleList.add("页面4");
+        titleList.add(getResources().getString(R.string.page0_title));
+        titleList.add(getResources().getString(R.string.page1_title));
+        titleList.add(getResources().getString(R.string.page2_title));
+        titleList.add(getResources().getString(R.string.page3_title));
 
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(4);
 
         mViewPager.setAdapter(new MyPagerFragmentAdapter(
                 getSupportFragmentManager(), fragmentList, titleList));
@@ -158,7 +153,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void addEvent(Map<String, Object> map) {
-        ((ViewPagerFragment2) fragmentList.get(2)).addEvent(map);
+         ((ViewPagerFragment2) fragmentList.get(2)).addEvent(map);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -178,6 +173,7 @@ public class MainActivity extends FragmentActivity {
                         map.put("finish", bundle.getLong("finish"));
                         map.put("kind", bundle.getLong("kind"));
                         map.put("myhint", bundle.getString("myhint"));
+                        map.put("bitmap", bundle.getByteArray("bitmap"));
 
                         addEvent(map);
                     }

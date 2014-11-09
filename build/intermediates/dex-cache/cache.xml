@@ -6,18 +6,6 @@
         jar="/home/chenwenxiao/AndroidProject/Utopia/app/build/intermediates/exploded-aar/Utopia/library/unspecified/classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="553da224e0ad2bfbd523ce56a0f5113c23f422e4"/>
-    <item
-        dex="/home/chenwenxiao/AndroidProject/Utopia/app/build/intermediates/pre-dexed/debug/classes-63ef24485b3ae10ebbdd8d9531623ec018223e95.jar"
-        jar="/home/chenwenxiao/AndroidProject/Utopia/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
-    <item
-        dex="/home/chenwenxiao/AndroidProject/Utopia/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-89b8a13ee2e7f2cb25df8ed74bace317cf42a69d.jar"
-        jar="/home/chenwenxiao/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+        sha1="ce8943ef1bcf3b949c3321e0d12cd116109645f7"/>
 
 </pre-dex-items>

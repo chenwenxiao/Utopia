@@ -30,6 +30,7 @@ import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.text.Format;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -234,6 +235,7 @@ public class ViewPagerFragment2 extends Fragment {
     void addEvent(Map<String, Object> map) {
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
+        byte[] bitmap;
         created = Long.valueOf(String.valueOf(map.get("created")));
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
@@ -243,6 +245,7 @@ public class ViewPagerFragment2 extends Fragment {
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
+        bitmap = ObjectAndByte.toByteArray(map.get("bitmap"));
 
         if (begin % 1000000 < startTime * 10000)
             begin = begin % 1000000 + TimeUtil.getTomorrow(currentTime);
@@ -266,6 +269,7 @@ public class ViewPagerFragment2 extends Fragment {
         cv.put("title", title);
         cv.put("value", value);
         cv.put("myhint", hint);
+        cv.put("bitmap", bitmap);
 
         cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
@@ -352,6 +356,7 @@ public class ViewPagerFragment2 extends Fragment {
         LinearLayout newSchedule = (LinearLayout) flater.inflate(R.layout.notepad_listview, ScheduleLayout, false);
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
+        byte[] bitmap;
         created = Long.valueOf(String.valueOf(map.get("created")));
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
@@ -361,6 +366,7 @@ public class ViewPagerFragment2 extends Fragment {
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
+        bitmap = ObjectAndByte.toByteArray(map.get("bitmap"));
 
         TextView tv = (TextView) newSchedule.findViewById(R.id.EventTextViewM);
         tv.setText(value);
@@ -408,6 +414,7 @@ public class ViewPagerFragment2 extends Fragment {
         LinearLayout newTip = (LinearLayout) flater.inflate(R.layout.notepad_listview, TipLayout, false);
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
+        byte[] bitmap;
         created = Long.valueOf(String.valueOf(map.get("created")));
         modified = Long.valueOf(String.valueOf(map.get("modified")));
         begin = Long.valueOf(String.valueOf(map.get("begin")));
@@ -417,6 +424,7 @@ public class ViewPagerFragment2 extends Fragment {
         title = String.valueOf(map.get("title"));
         value = String.valueOf(map.get("value"));
         hint = String.valueOf(map.get("myhint"));
+        bitmap = ObjectAndByte.toByteArray(map.get("bitmap"));
 
         TextView tv = (TextView) newTip.findViewById(R.id.EventTextViewM);
         tv.setText(value);
@@ -457,13 +465,14 @@ public class ViewPagerFragment2 extends Fragment {
         todayTime = TimeUtil.getToday(todayTime) + startTime * 10000;
         double tomorrowTime = TimeUtil.getTomorrow(todayTime) + startTime * 10000;
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint"}, "kind = " + KIND_SCHEDULE +
+                "end", "finish", "kind", "myhint", "bitmap"}, "kind = " + KIND_SCHEDULE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin ASC");
         while (cursor.moveToNext()) {
             Map<String, Object> map = new HashMap<String, Object>();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
+            byte[] bitmap;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -474,6 +483,7 @@ public class ViewPagerFragment2 extends Fragment {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
+            bitmap = cursor.getBlob(cursor.getColumnIndex("bitmap"));
 
             map.put("created", created);
             map.put("modified", modified);
@@ -484,17 +494,20 @@ public class ViewPagerFragment2 extends Fragment {
             map.put("finish", finish);
             map.put("kind", kind);
             map.put("myhint", hint);
+            map.put("bitmap", ObjectAndByte.toObject(bitmap));
 
             insertSchedule(map, ScheduleLayout, ScheduleMap);
         }
-
-        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin", "end", "finish", "kind", "myhint"}, "kind = " + KIND_ADVERTISE +
+        cursor.close();
+        cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
+                "end", "finish", "kind", "myhint", "bitmap"}, "kind = " + KIND_ADVERTISE +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {
             Map<String, Object> map = new HashMap<String, Object>();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
+            byte[] bitmap;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -505,6 +518,8 @@ public class ViewPagerFragment2 extends Fragment {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
+            bitmap = cursor.getBlob(cursor.getColumnIndex("bitmap"));
+
 
             map.put("created", created);
             map.put("modified", modified);
@@ -515,18 +530,21 @@ public class ViewPagerFragment2 extends Fragment {
             map.put("finish", finish);
             map.put("kind", kind);
             map.put("myhint", hint);
+            map.put("bitmap", ObjectAndByte.toObject(bitmap));
 
             insertAdvertise(map, imageView);
         }
+        cursor.close();
 
         cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint"}, "kind = " + KIND_TIP +
+                "end", "finish", "kind", "myhint", "bitmap"}, "kind = " + KIND_TIP +
                 " AND " + "(begin < " + tomorrowTime +
                 " AND " + "begin >= " + todayTime + ")", null, "begin asc");
         while (cursor.moveToNext()) {
             Map<String, Object> map = new HashMap<String, Object>();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
+            byte[] bitmap;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -537,6 +555,7 @@ public class ViewPagerFragment2 extends Fragment {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
+            bitmap = cursor.getBlob(cursor.getColumnIndex("bitmap"));
 
             map.put("created", created);
             map.put("modified", modified);
@@ -547,9 +566,11 @@ public class ViewPagerFragment2 extends Fragment {
             map.put("finish", finish);
             map.put("kind", kind);
             map.put("myhint", hint);
+            map.put("bitmap", ObjectAndByte.toObject(bitmap));
 
             insertTip(map, TipLayout, TipMap);
         }
+        cursor.close();
     }
 
     private void buildTimeLine() {

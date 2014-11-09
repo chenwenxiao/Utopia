@@ -28,7 +28,6 @@ public class ViewPagerFragment3 extends Fragment {
                 container, false);
         imageView1 = (ImageView) view.findViewById(R.id.image_view_1);
         imageView2 = (ImageView) view.findViewById(R.id.image_view_2);
-        imageView3 = (ImageView) view.findViewById(R.id.image_view_3);
         imageView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,13 +39,6 @@ public class ViewPagerFragment3 extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),HealthTipListActivity.class);
-                startActivity(intent);
-            }
-        });
-        imageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),MemorialEventListActivity.class);
                 startActivity(intent);
             }
         });

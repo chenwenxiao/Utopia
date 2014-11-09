@@ -49,25 +49,12 @@ public class ViewPagerFragment0 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_layout0,container, false);
+        View view = inflater.inflate(R.layout.fragment_layout0, container, false);
 
-        button0 = (ImageView)view.findViewById(R.id.page0button);
-        //editText0 = (EditText) view.findViewById(R.id.page0EditText0);
+        button0 = (ImageView) view.findViewById(R.id.page0button);
         lv0 = (ListView) view.findViewById(R.id.page0ListView0);
 
         registerForContextMenu(lv0);
-
-
-/*
-        lv0.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                listResource.get(position).get("value");
-                return false;
-            }
-        });
-*/
         cr = getActivity().getContentResolver();
 
 
@@ -84,7 +71,7 @@ public class ViewPagerFragment0 extends Fragment {
         button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Utopia","imageClicked");
+                Log.i("Utopia", "imageClicked");
                 dialog.show();
 
             }
@@ -100,17 +87,17 @@ public class ViewPagerFragment0 extends Fragment {
             long marginRight = Double.valueOf(70 * Math.random() + 30).longValue();
             cv.put("value", value);
             cv.put("kind", KIND_NOTE);
-            cv.put("created",marginLeft);
-            cv.put("end",marginRight);
+            cv.put("created", marginLeft);
+            cv.put("end", marginRight);
             cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("value", value);
             map.put("kind", KIND_NOTE);
-            map.put("created",marginLeft);
-            map.put("end",marginRight);
+            map.put("created", marginLeft);
+            map.put("end", marginRight);
             listResource.add(map);
-            lv0.invalidateViews();
+            sa.notifyDataSetChanged();
         }
 
     }
@@ -118,7 +105,8 @@ public class ViewPagerFragment0 extends Fragment {
     public void FromSQLToListView() {
         Uri uri = DataProviderMetaData.DataTableMetaData.CONTENT_URI;
 
-        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "value", "kind","end"}, "kind = " + KIND_NOTE, null, "created asc");
+        Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "value", "kind", "end"},
+                "kind = " + KIND_NOTE, null, "created asc");
 
         //Log.i("utopia", String.valueOf(cursor == null));
         listResource.clear();
@@ -126,11 +114,11 @@ public class ViewPagerFragment0 extends Fragment {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("created", cursor.getLong(cursor.getColumnIndex("created")));
             map.put("value", cursor.getString(cursor.getColumnIndex("value")));
-            map.put("end",cursor.getLong(cursor.getColumnIndex("end")));
+            map.put("end", cursor.getLong(cursor.getColumnIndex("end")));
             listResource.add(map);
         }
 
-        sa = new NotePadListItemAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listitem,null,null);
+        sa = new NotePadListItemAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listitem, null, null);
         //sa = new NotePadListItemAdapter(getActivity().getApplicationContext(),R.layout.notepad_listitem,listResource);
         lv0.setAdapter(sa);
         cursor.close();
@@ -147,9 +135,8 @@ public class ViewPagerFragment0 extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId())
-        {
-           //TODO next time...
+        switch (item.getItemId()) {
+            //TODO next time...
         }
         return super.onContextItemSelected(item);
     }

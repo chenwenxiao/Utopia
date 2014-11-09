@@ -41,6 +41,7 @@ public class QuickEntry extends AlertDialog {
 
         long created, modified, begin, end, finish, kind,
                 beginHour, beginMinute, endHour, endMinute;
+        byte[] bitmap = {};
         String title, value, hint;
         beginHour = picker01.getValue();
         beginMinute = picker02.getValue();
@@ -73,6 +74,7 @@ public class QuickEntry extends AlertDialog {
         map.put("finish", finish);
         map.put("kind", kind);
         map.put("myhint", hint);
+        map.put("bitmap", bitmap);
 
         return map;
         //dismiss : ((ViewPagerFragment2)(((MainActivity) getOwnerActivity()).fragmentList.get(2))).addEvent(map);

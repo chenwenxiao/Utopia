@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 /**
  * Created by Administrator on 2014/7/27 0027.
  */
-public class DataProviderMetaData {
+public class    DataProviderMetaData {
     public static final String AUTHORITY = "com.Utopia.utopia.app.SQL.DataProvider";
     public static final String DATABASE_NAME = "data.db";
     public static final int DATABASE_VERSION = 1;
@@ -41,6 +41,7 @@ public class DataProviderMetaData {
         public static final String DATA_FINISH = "finish";
         public static final String DATA_KIND = "kind";
         public static final String DATA_HINT = "myhint";
+        public static final String DATA_BITMAP = "bitmap";
 
         public static final int KIND_NONE = 0;
         public static final int KIND_NOTE = 1;

@@ -1,6 +1,7 @@
 package com.Utopia.utopia.app;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,15 +51,5 @@ public class NotePadListItemAdapter extends SimpleAdapter{
         TextView textView = (TextView)view.findViewById(R.id.EventTextViewM);
         textView.setText(value);
         return view;
-        /*
-        Map<String,Object> map;
-        if (getItem(position) instanceof Map) {
-            map = (Map<String,Object>)getItem(position);
-            int margin = Integer.parseInt(map.get("created").toString());
-            Log.i("utopia",String.valueOf(margin));
-        }
-        return view;
-        */
-
     }
 }
