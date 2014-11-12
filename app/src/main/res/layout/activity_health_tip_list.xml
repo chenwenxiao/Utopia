@@ -9,17 +9,12 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.Utopia.utopia.app.HealthTipListActivity">
 
-    <com.Utopia.utopia.app.HealthTipListItem
+    <ListView
+        android:id="@+id/health_tip_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.Utopia.utopia.app.HealthTipListItem>
-    <com.Utopia.utopia.app.HealthTipListItem
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.Utopia.utopia.app.HealthTipListItem>
-    <com.Utopia.utopia.app.HealthTipListItem
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.Utopia.utopia.app.HealthTipListItem>
-    <com.Utopia.utopia.app.HealthTipListItem
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.Utopia.utopia.app.HealthTipListItem>
-
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:stackFromBottom="true"
+        android:divider="@null"
+        />
 </LinearLayout>

@@ -1,15 +1,20 @@
 package com.Utopia.utopia.app;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Rect;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Map;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * Created by Joe on 14-9-7.
@@ -30,11 +35,11 @@ public class EveryDayPushView extends RelativeLayout {
         init();
     }
 
-    public EveryDayPushView(Context context, Map<String, Object> map) {
+    public EveryDayPushView(Context context, Bundle map) {
         super(context);
         init();
         setText(String.valueOf(map.get("value")));
-        setImageViewSrc(ObjectAndByte.toByteArray(map.get("bitmap")));
+        setImageViewSrc(map.getByteArray("edpv"));
     }
 
     private void init() {
@@ -49,6 +54,12 @@ public class EveryDayPushView extends RelativeLayout {
     }
 
     public void setImageViewSrc(byte[] in) {
-        imageView.setImageBitmap(BitmapFactory.decodeByteArray(in, 0, in.length));
+        try {
+            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(new ByteArrayInputStream(in), true);
+            Bitmap bitmap = decoder.decodeRegion(new Rect(0, 0, decoder.getWidth(), decoder.getHeight()), null);
+            imageView.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -51,36 +51,15 @@ public class ViewPagerFragment1 extends Fragment {
         while (cursor.moveToNext()) {
             ++count;
             Map<String, Object> map = new HashMap<String, Object>();
-            long create, modified, begin, end, finish, kind;
-            byte[] bitmap;
-            String title, value, hint;
-
-            create = cursor.getLong(cursor.getColumnIndex("created"));
-            modified = cursor.getLong(cursor.getColumnIndex("modified"));
-            title = cursor.getString(cursor.getColumnIndex("title"));
+            String value;
             value = cursor.getString(cursor.getColumnIndex("value"));
-            begin = cursor.getLong(cursor.getColumnIndex("begin"));
-            end = cursor.getLong(cursor.getColumnIndex("end"));
-            finish = cursor.getLong(cursor.getColumnIndex("finish"));
-            kind = cursor.getLong(cursor.getColumnIndex("kind"));
-            hint = cursor.getString(cursor.getColumnIndex("myhint"));
-            bitmap = cursor.getBlob(cursor.getColumnIndex("bitmap"));
-
-            map.put("created", create);
-            map.put("modified", modified);
-            map.put("title", title);
             map.put("value", value);
-            map.put("begin", begin);
-            map.put("end", end);
-            map.put("finish", finish);
-            map.put("kind", kind);
-            map.put("myhint", hint);
 
             listResource.add(map);
         }
         cursor.close();
         if (count > 0) {
-            sa = new SimpleAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listview,
+            sa = new SimpleAdapter(getActivity(), listResource, R.layout.notepad_listview,
                     new String[]{"value"}, new int[]{R.id.EventTextViewM});
             lv0.setAdapter(sa);
         }

@@ -15,7 +15,6 @@ import android.util.Log;
 
 import com.Utopia.utopia.app.TimeUtil;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -70,7 +69,8 @@ public class DataProvider extends ContentProvider {
                     + DataProviderMetaData.DataTableMetaData.DATA_END + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_FINISH + " INTEGER, "
                     + DataProviderMetaData.DataTableMetaData.DATA_KIND + " INTEGER, "
-                    + DataProviderMetaData.DataTableMetaData.DATA_HINT + " INTEGER" + ");");
+                    + DataProviderMetaData.DataTableMetaData.DATA_HINT + " INTEGER, "
+                    + DataProviderMetaData.DataTableMetaData.DATA_BITMAP + " BLOB" + ");");
         }
 
         @Override

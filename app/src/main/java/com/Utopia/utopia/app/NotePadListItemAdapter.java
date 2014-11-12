@@ -8,10 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Joe on 14-10-4.
@@ -19,11 +16,18 @@ import java.util.Map;
 public class NotePadListItemAdapter extends SimpleAdapter{
     int resource;
     Context context;
+    List<Bundle> listResource;
 
-    public NotePadListItemAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
-        super(context, data, resource, from, to);
+    public NotePadListItemAdapter(Context context, List<Bundle> data, int resource, String[] from, int[] to) {
+        super(context, null, resource, from, to);
+        listResource = data;
         this.context = context;
         this.resource = resource;
+    }
+
+    @Override
+    public int getCount() {
+        return listResource.size();
     }
 
     @Override
@@ -36,7 +40,7 @@ public class NotePadListItemAdapter extends SimpleAdapter{
         else {
             view = inflater.inflate(resource,null);
         }
-        Map<String,Object> map = (Map<String,Object>)getItem(position);
+        Bundle map = (Bundle)getItem(position);
         int marginLeft = (int)Long.parseLong(map.get("created").toString());
         int marginRight = (int)Long.parseLong(map.get("end").toString());
         String value = map.get("value").toString();

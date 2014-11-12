@@ -14,8 +14,6 @@ import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
 import net.simonvt.numberpicker.NumberPicker;
 
-import java.util.HashMap;
-
 /**
  * Created by Joe on 14-8-15.
  */
@@ -36,19 +34,19 @@ public class QuickEntry extends AlertDialog {
 
     }
 
-    HashMap<String, Object> getContent()
+    Bundle getContent()
     {
 
         long created, modified, begin, end, finish, kind,
                 beginHour, beginMinute, endHour, endMinute;
-        byte[] bitmap = {};
+        byte[] edpv = {};
         String title, value, hint;
         beginHour = picker01.getValue();
         beginMinute = picker02.getValue();
         endHour = picker11.getValue();
         endMinute = picker12.getValue();
 
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        Bundle map = new Bundle();
 
         created = TimeUtil.getCurrentTime();
         modified = TimeUtil.getCurrentTime();
@@ -65,16 +63,16 @@ public class QuickEntry extends AlertDialog {
         finish = 0;
         kind = DataProviderMetaData.DataTableMetaData.KIND_EVENT;
 
-        map.put("created", created);
-        map.put("modified", modified);
-        map.put("title", title);
-        map.put("value", value);
-        map.put("begin", begin);
-        map.put("end", end);
-        map.put("finish", finish);
-        map.put("kind", kind);
-        map.put("myhint", hint);
-        map.put("bitmap", bitmap);
+        map.putLong("created", created);
+        map.putLong("modified", modified);
+        map.putString("title", title);
+        map.putString("value", value);
+        map.putLong("begin", begin);
+        map.putLong("end", end);
+        map.putLong("finish", finish);
+        map.putLong("kind", kind);
+        map.putString("myhint", hint);
+        map.putByteArray("edpv", edpv);
 
         return map;
         //dismiss : ((ViewPagerFragment2)(((MainActivity) getOwnerActivity()).fragmentList.get(2))).addEvent(map);

@@ -25,8 +25,9 @@
                 >
                 <com.Utopia.utopia.app.EveryDayPushViewPager
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"></com.Utopia.utopia.app.EveryDayPushViewPager>
+                    android:layout_height="120dp"
+                    android:layout_weight="0.2"
+                    android:id="@+id/page2EveryDayPushViewPager0"></com.Utopia.utopia.app.EveryDayPushViewPager>
 
 
                 <LinearLayout
@@ -71,8 +72,9 @@
                 android:weightSum="1">
                 <com.Utopia.utopia.app.EveryDayPushViewPager
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"></com.Utopia.utopia.app.EveryDayPushViewPager>
+                    android:layout_height="120dp"
+                    android:layout_weight="0.2"
+                    android:id="@+id/page2EveryDayPushViewPager1"></com.Utopia.utopia.app.EveryDayPushViewPager>
 
 
                 <LinearLayout
@@ -117,8 +119,9 @@
                 android:weightSum="1">
                 <com.Utopia.utopia.app.EveryDayPushViewPager
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"></com.Utopia.utopia.app.EveryDayPushViewPager>
+                    android:layout_height="120dp"
+                    android:layout_weight="0.2"
+                    android:id="@+id/page2EveryDayPushViewPager2"></com.Utopia.utopia.app.EveryDayPushViewPager>
 
 
                 <LinearLayout

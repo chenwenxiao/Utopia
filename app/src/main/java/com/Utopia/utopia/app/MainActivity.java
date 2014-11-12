@@ -1,6 +1,11 @@
 package com.Utopia.utopia.app;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,14 +17,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
 
+import com.Utopia.utopia.app.SQL.DataProviderMetaData;
+
+import org.apache.http.util.EncodingUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class MainActivity extends FragmentActivity {
+
+    public static final int KIND_SCHEDULE = DataProviderMetaData.DataTableMetaData.KIND_SCHEDULE;
+    public static final int KIND_TIP = DataProviderMetaData.DataTableMetaData.KIND_TIP;
+    public static final int KIND_ADVERTISE = DataProviderMetaData.DataTableMetaData.KIND_ADVERTISE;
+    ContentResolver cr;
 
     private void getOverflowMenu() {
 
@@ -44,6 +58,22 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         //用于永远显示3个点
         getOverflowMenu();
+
+        cr = getContentResolver();
+
+        Boolean isFirstIn = false;
+        SharedPreferences pref = getSharedPreferences("Utopia", 0);
+        //取得相应的值，如果没有该值，说明还未写入，用true作为默认值
+        isFirstIn = pref.getBoolean("isFirstIn", true);
+
+        if (isFirstIn) {
+            initAdvertise();
+            initTip();
+
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("isFirstIn", false);
+            editor.commit();
+        }
 
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
         pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.gold));
@@ -71,6 +101,147 @@ public class MainActivity extends FragmentActivity {
         mViewPager.setAdapter(new MyPagerFragmentAdapter(
                 getSupportFragmentManager(), fragmentList, titleList));
 
+    }
+
+    void initAdvertise() {
+        try {
+            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data1pic);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] buffer = byteArrayOutputStream.toByteArray();
+
+            long kind = KIND_ADVERTISE;
+            String value = "仙人球满身刺_养生美容呵护您";
+
+            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+                ContentValues cv = new ContentValues();
+                cv.put("begin", begin);
+                cv.put("kind", kind);
+                cv.put("edpv", buffer);
+                cv.put("value", value);
+
+                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data2pic);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] buffer = byteArrayOutputStream.toByteArray();
+
+            long kind = KIND_ADVERTISE;
+            String value = "高跟鞋女人的养生美容法";
+
+            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+                ContentValues cv = new ContentValues();
+                cv.put("begin", begin);
+                cv.put("kind", kind);
+                cv.put("edpv", buffer);
+                cv.put("value", value);
+
+                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data3pic);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] buffer = byteArrayOutputStream.toByteArray();
+
+            long kind = KIND_ADVERTISE;
+            String value = "保护好双脚_老中医十个养肾妙招";
+
+            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+                ContentValues cv = new ContentValues();
+                cv.put("begin", begin);
+                cv.put("kind", kind);
+                cv.put("edpv", buffer);
+                cv.put("value", value);
+
+                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data4pic);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] buffer = byteArrayOutputStream.toByteArray();
+
+            long kind = KIND_ADVERTISE;
+            String value = "祛痘佳品_柚子脐橙可养生美容";
+
+            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+                ContentValues cv = new ContentValues();
+                cv.put("begin", begin);
+                cv.put("kind", kind);
+                cv.put("edpv", buffer);
+                cv.put("value", value);
+
+                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Bitmap source = BitmapFactory.decodeResource(getResources(), R.raw.data5pic);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            source.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] buffer = byteArrayOutputStream.toByteArray();
+
+            long kind = KIND_ADVERTISE;
+            String value = "西瓜皮的营养成分和美容作用";
+
+            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+                ContentValues cv = new ContentValues();
+                cv.put("begin", begin);
+                cv.put("kind", kind);
+                cv.put("edpv", buffer);
+                cv.put("value", value);
+
+                cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    void initTip() {
+        String res = "";
+        try {
+            InputStream in = getResources().openRawResource(R.raw.tip_month);
+            int length = in.available();
+            byte[] buffer = new byte[length];
+            in.read(buffer);
+            res = EncodingUtils.getString(buffer, "UTF-8");
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String[] lines = res.split("\n");
+        for (int i = 0; i < lines.length; i += 3) {
+            long kind = KIND_TIP;
+            long begin = Long.parseLong(lines[i]) * 1000000L + 120000L;
+            String title = lines[i + 1];
+            String value = lines[i + 2];
+
+            ContentValues cv = new ContentValues();
+            cv.put("begin", begin);
+            cv.put("kind", kind);
+            cv.put("title", title);
+            cv.put("value", value);
+
+            cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+        }
     }
 
     //适配器
@@ -152,8 +323,8 @@ public class MainActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addEvent(Map<String, Object> map) {
-         ((ViewPagerFragment2) fragmentList.get(2)).addEvent(map);
+    public void addEvent(Bundle map) {
+        ((ViewPagerFragment2) fragmentList.get(2)).addEvent(map);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -162,18 +333,18 @@ public class MainActivity extends FragmentActivity {
                 case REQUEST_STDENTRY:
                     Bundle bundle = data.getExtras();
                     if (bundle != null) {
-                        Map<String, Object> map = new HashMap<String, Object>();
+                        Bundle map = new Bundle();
 
-                        map.put("created", bundle.getLong("created"));
-                        map.put("modified", bundle.getLong("modified"));
-                        map.put("title", bundle.getString("title"));
-                        map.put("value", bundle.getString("value"));
-                        map.put("begin", bundle.getLong("begin"));
-                        map.put("end", bundle.getLong("end"));
-                        map.put("finish", bundle.getLong("finish"));
-                        map.put("kind", bundle.getLong("kind"));
-                        map.put("myhint", bundle.getString("myhint"));
-                        map.put("bitmap", bundle.getByteArray("bitmap"));
+                        map.putLong("created", bundle.getLong("created"));
+                        map.putLong("modified", bundle.getLong("modified"));
+                        map.putString("title", bundle.getString("title"));
+                        map.putString("value", bundle.getString("value"));
+                        map.putLong("begin", bundle.getLong("begin"));
+                        map.putLong("end", bundle.getLong("end"));
+                        map.putLong("finish", bundle.getLong("finish"));
+                        map.putLong("kind", bundle.getLong("kind"));
+                        map.putString("myhint", bundle.getString("myhint"));
+                        map.putByteArray("bitmap", bundle.getByteArray("bitmap"));
 
                         addEvent(map);
                     }

@@ -9,13 +9,10 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.Utopia.utopia.app.R;
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EveryDayPushListActivity extends Activity {
 
@@ -26,7 +23,7 @@ public class EveryDayPushListActivity extends Activity {
     private ListView lv0;
     private ContentResolver cr;
     private SimpleAdapter sa;
-    List<Map<String, Object>> listResource = new ArrayList<Map<String, Object>>();
+    List<Bundle> listResource = new ArrayList<Bundle>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +41,14 @@ public class EveryDayPushListActivity extends Activity {
 
         cr = getContentResolver();
         Cursor cursor = cr.query(DataProviderMetaData.DataTableMetaData.CONTENT_URI, new String[]{"created", "modified", "title", "value", "begin",
-                "end", "finish", "kind", "myhint", "bitmap"}, "kind = " + KIND_ADVERTISE,
+                "end", "finish", "kind", "myhint", "edpv"}, "kind = " + KIND_ADVERTISE,
                 null, "begin DESC");
         listResource.clear();
         while (cursor.moveToNext()) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Bundle map = new Bundle();
             long created, modified, begin, end, finish, kind;
             String title, value, hint;
-            byte[] bitmap;
+            byte[] edpv;
 
             created = cursor.getLong(cursor.getColumnIndex("created"));
             modified = cursor.getLong(cursor.getColumnIndex("modified"));
@@ -62,18 +59,18 @@ public class EveryDayPushListActivity extends Activity {
             finish = cursor.getLong(cursor.getColumnIndex("finish"));
             kind = cursor.getLong(cursor.getColumnIndex("kind"));
             hint = cursor.getString(cursor.getColumnIndex("myhint"));
-            bitmap = cursor.getBlob(cursor.getColumnIndex("bitmap"));
+            edpv = cursor.getBlob(cursor.getColumnIndex("edpv"));
 
-            map.put("created", created);
-            map.put("modified", modified);
-            map.put("title", title);
-            map.put("value", value);
-            map.put("begin", begin);
-            map.put("end", end);
-            map.put("finish", finish);
-            map.put("kind", kind);
-            map.put("myhint", hint);
-            map.put("bitmap", ObjectAndByte.toObject(bitmap));
+            map.putLong("created", created);
+            map.putLong("modified", modified);
+            map.putString("title", title);
+            map.putString("value", value);
+            map.putLong("begin", begin);
+            map.putLong("end", end);
+            map.putLong("finish", finish);
+            map.putLong("kind", kind);
+            map.putString("myhint", hint);
+            map.putByteArray("edpv", edpv);
 
             listResource.add(map);
         }

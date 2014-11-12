@@ -15,8 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -24,9 +22,7 @@ import android.widget.SimpleAdapter;
 import com.Utopia.utopia.app.SQL.DataProviderMetaData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ViewPagerFragment0 extends Fragment {
     public static final int KIND_NOTE = DataProviderMetaData.DataTableMetaData.KIND_NOTE;
@@ -34,13 +30,9 @@ public class ViewPagerFragment0 extends Fragment {
     private ListView lv0;
     private ContentResolver cr;
     private ImageView button0;
-
     private SimpleAdapter sa;
-
     private InputDialog dialog;
-
-    //EditText editText0;
-    List<Map<String, Object>> listResource = new ArrayList<Map<String, Object>>();
+    List<Bundle> listResource = new ArrayList<Bundle>();
 
     public ViewPagerFragment0() {
         super();
@@ -91,11 +83,11 @@ public class ViewPagerFragment0 extends Fragment {
             cv.put("end", marginRight);
             cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
 
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("value", value);
-            map.put("kind", KIND_NOTE);
-            map.put("created", marginLeft);
-            map.put("end", marginRight);
+            Bundle map = new Bundle();
+            map.putString("value", value);
+            map.putLong("kind", KIND_NOTE);
+            map.putLong("created", marginLeft);
+            map.putLong("end", marginRight);
             listResource.add(map);
             sa.notifyDataSetChanged();
         }
@@ -111,15 +103,14 @@ public class ViewPagerFragment0 extends Fragment {
         //Log.i("utopia", String.valueOf(cursor == null));
         listResource.clear();
         while (cursor.moveToNext()) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("created", cursor.getLong(cursor.getColumnIndex("created")));
-            map.put("value", cursor.getString(cursor.getColumnIndex("value")));
-            map.put("end", cursor.getLong(cursor.getColumnIndex("end")));
+            Bundle map = new Bundle();
+            map.putLong("created", cursor.getLong(cursor.getColumnIndex("created")));
+            map.putString("value", cursor.getString(cursor.getColumnIndex("value")));
+            map.putLong("end", cursor.getLong(cursor.getColumnIndex("end")));
             listResource.add(map);
         }
 
-        sa = new NotePadListItemAdapter(getActivity().getApplicationContext(), listResource, R.layout.notepad_listitem, null, null);
-        //sa = new NotePadListItemAdapter(getActivity().getApplicationContext(),R.layout.notepad_listitem,listResource);
+        sa = new NotePadListItemAdapter(getActivity(), listResource, R.layout.notepad_listitem, null, null);
         lv0.setAdapter(sa);
         cursor.close();
     }
