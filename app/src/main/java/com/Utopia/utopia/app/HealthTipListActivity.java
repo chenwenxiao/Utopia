@@ -49,7 +49,7 @@ public class HealthTipListActivity extends Activity {
             map.putLong("begin", cursor.getLong(cursor.getColumnIndex("begin")));
             map.putString("title", cursor.getString(cursor.getColumnIndex("value")));
             cursor.moveToNext();
-            map.getString("value", cursor.getString(cursor.getColumnIndex("value")));
+            map.putString("value", cursor.getString(cursor.getColumnIndex("value")));
             listResource.add(map);
         }
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +48,10 @@ public class EveryDayPushListItemAdapter extends SimpleAdapter {
         if (convertView != null) {
             view = convertView;
         } else {
-            view = new ViewPager(context);
+            view = inflater.inflate(resource, null);
         }
-        List <Bundle> currentList = listResource.get(position);
-        ((ViewPager) view).setAdapter(new EveryDayPushViewPagerAdapter(context, currentList));
+        List<Bundle> currentList = listResource.get(position);
+        ((EveryDayPushViewPager) view.findViewById(R.id.EveryDayPushViewPager)).setAdapter(new EveryDayPushViewPagerAdapter(context, currentList));
         return view;
     }
 }

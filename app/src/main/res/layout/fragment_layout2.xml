@@ -54,7 +54,7 @@
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:id="@+id/page2Scroll0ScheduleLayout"></LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -101,7 +101,7 @@
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:id="@+id/page2Scroll1ScheduleLayout"></LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -148,7 +148,7 @@
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:id="@+id/page2Scroll2ScheduleLayout"></LinearLayout>
                 </LinearLayout>
             </LinearLayout>

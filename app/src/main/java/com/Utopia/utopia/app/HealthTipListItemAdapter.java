@@ -40,11 +40,11 @@ public class HealthTipListItemAdapter extends SimpleAdapter {
             view = inflater.inflate(resource, null);
         }
         Bundle map = listResource.get(position);
-        long begin = Long.parseLong(map.get("begin").toString());
+        long begin = map.getLong("begin");
 
         String date = TimeUtil.toLunar(begin);
-        String title = map.get("title").toString();
-        String value = map.get("value").toString();
+        String title = map.getString("title");
+        String value = map.getString("value");
         ((TextView) view.findViewById(R.id.health_tip_date)).setText(date);
         ((TextView) view.findViewById(R.id.health_tip_value1)).setText(title);
         ((TextView) view.findViewById(R.id.health_tip_value2)).setText(value);

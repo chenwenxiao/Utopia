@@ -59,7 +59,7 @@ public class ViewPagerFragment1 extends Fragment {
         }
         cursor.close();
         if (count > 0) {
-            sa = new SimpleAdapter(getActivity(), listResource, R.layout.notepad_listview,
+            sa = new SimpleAdapter(getActivity(), listResource, R.layout.notepad_listitem,
                     new String[]{"value"}, new int[]{R.id.EventTextViewM});
             lv0.setAdapter(sa);
         }

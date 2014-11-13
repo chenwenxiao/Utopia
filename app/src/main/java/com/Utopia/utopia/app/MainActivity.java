@@ -113,7 +113,7 @@ public class MainActivity extends FragmentActivity {
             long kind = KIND_ADVERTISE;
             String value = "仙人球满身刺_养生美容呵护您";
 
-            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+            for (long begin = 20141101120000L; begin < 20141111120000L; begin += 1000000L) {
                 ContentValues cv = new ContentValues();
                 cv.put("begin", begin);
                 cv.put("kind", kind);
@@ -135,7 +135,7 @@ public class MainActivity extends FragmentActivity {
             long kind = KIND_ADVERTISE;
             String value = "高跟鞋女人的养生美容法";
 
-            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+            for (long begin = 20141101120000L; begin < 20141111120000L; begin += 1000000L) {
                 ContentValues cv = new ContentValues();
                 cv.put("begin", begin);
                 cv.put("kind", kind);
@@ -157,7 +157,7 @@ public class MainActivity extends FragmentActivity {
             long kind = KIND_ADVERTISE;
             String value = "保护好双脚_老中医十个养肾妙招";
 
-            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+            for (long begin = 20141111120000L; begin < 20141121120000L; begin += 1000000L) {
                 ContentValues cv = new ContentValues();
                 cv.put("begin", begin);
                 cv.put("kind", kind);
@@ -179,7 +179,7 @@ public class MainActivity extends FragmentActivity {
             long kind = KIND_ADVERTISE;
             String value = "祛痘佳品_柚子脐橙可养生美容";
 
-            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+            for (long begin = 20141111120000L; begin < 20141121120000L; begin += 1000000L) {
                 ContentValues cv = new ContentValues();
                 cv.put("begin", begin);
                 cv.put("kind", kind);
@@ -201,7 +201,7 @@ public class MainActivity extends FragmentActivity {
             long kind = KIND_ADVERTISE;
             String value = "西瓜皮的营养成分和美容作用";
 
-            for (long begin = 20141101120000L; begin < 20141131120000L; begin += 1000000L) {
+            for (long begin = 20141121120000L; begin < 20141131120000L; begin += 1000000L) {
                 ContentValues cv = new ContentValues();
                 cv.put("begin", begin);
                 cv.put("kind", kind);
@@ -231,13 +231,20 @@ public class MainActivity extends FragmentActivity {
         for (int i = 0; i < lines.length; i += 3) {
             long kind = KIND_TIP;
             long begin = Long.parseLong(lines[i]) * 1000000L + 120000L;
-            String title = lines[i + 1];
-            String value = lines[i + 2];
+            String value = lines[i + 1];
 
             ContentValues cv = new ContentValues();
             cv.put("begin", begin);
             cv.put("kind", kind);
-            cv.put("title", title);
+            cv.put("value", value);
+
+            cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);
+
+            value = lines[i + 2];
+
+            cv = new ContentValues();
+            cv.put("begin", begin);
+            cv.put("kind", kind);
             cv.put("value", value);
 
             cr.insert(DataProviderMetaData.DataTableMetaData.CONTENT_URI, cv);

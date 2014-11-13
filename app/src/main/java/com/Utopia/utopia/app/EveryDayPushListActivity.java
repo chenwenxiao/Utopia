@@ -74,7 +74,7 @@ public class EveryDayPushListActivity extends Activity {
 
             listResource.add(map);
         }
-        sa = new EveryDayPushListItemAdapter(getApplicationContext(), listResource, R.layout.notepad_listitem, null, null);
+        sa = new EveryDayPushListItemAdapter(getApplicationContext(), listResource, R.layout.every_day_push_view_pager, null, null);
         lv0.setAdapter(sa);
         cursor.close();
     }

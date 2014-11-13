@@ -365,7 +365,7 @@ public class ViewPagerFragment2 extends Fragment {
     void insertTip(Bundle map, LinearLayout
             TipLayout, TreeMap<String, LinearLayout> TipMap) {
         LayoutInflater flater = LayoutInflater.from(this.getActivity());
-        LinearLayout newTip = (LinearLayout) flater.inflate(R.layout.notepad_listview, TipLayout, false);
+        LinearLayout newTip = (LinearLayout) flater.inflate(R.layout.notepad_listitem, TipLayout, false);
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
         byte[] edpv;
@@ -432,7 +432,7 @@ public class ViewPagerFragment2 extends Fragment {
     void insertSchedule(Bundle map, LinearLayout
             ScheduleLayout, TreeMap<String, LinearLayout> ScheduleMap) {
         LayoutInflater flater = LayoutInflater.from(this.getActivity());
-        LinearLayout newSchedule = (LinearLayout) flater.inflate(R.layout.notepad_listview, ScheduleLayout, false);
+        LinearLayout newSchedule = (LinearLayout) flater.inflate(R.layout.notepad_listitem, ScheduleLayout, false);
         long created, modified, begin, end, finish, kind;
         String title, value, hint;
         byte[] edpv;

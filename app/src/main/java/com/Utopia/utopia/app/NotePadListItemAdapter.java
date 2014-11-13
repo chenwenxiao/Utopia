@@ -40,7 +40,7 @@ public class NotePadListItemAdapter extends SimpleAdapter{
         else {
             view = inflater.inflate(resource,null);
         }
-        Bundle map = (Bundle)getItem(position);
+        Bundle map = listResource.get(position);
         int marginLeft = (int)Long.parseLong(map.get("created").toString());
         int marginRight = (int)Long.parseLong(map.get("end").toString());
         String value = map.get("value").toString();
